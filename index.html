@@ -130,6 +130,8 @@ const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } cat
 let cart = load('mannr_cart', []);
 let favorites = load('mannr_fav', [1, 2, 5]);
 let orders = load('mannr_orders', []);
+let reviews = load('mannr_reviews', {}); // {productId: [{name,rating,text,date}]}
+let reviewRating = 5;
 let currentPage = 'home', currentTab = 'All';
 let selectedProduct = products[0], selectedOutfit = outfitSets[0];
 let selectedSize = 'M', selectedPayment = 'promptpay', selectedColor = null;
@@ -143,10 +145,11 @@ const SHIPPING = 50;
 const baht = n => '฿' + n.toLocaleString('en-US');
 const lines = list => list.map(i => ({...i, product: pid(i.id)}));
 const sumOf = list => lines(list).reduce((s, i) => s + i.product.price * i.qty, 0);
-const persist = () => { save('mannr_cart', cart); save('mannr_fav', favorites); save('mannr_orders', orders); };
+const persist = () => { save('mannr_cart', cart); save('mannr_fav', favorites); save('mannr_orders', orders); save('mannr_reviews', reviews); };
 
 // ---------- ACTIONS ----------
 function nav(page, param) {
+  closeAllReviews();
   currentPage = page;
   if (page === 'product' && param) { selectedProduct = pid(param); selectedColor = selectedProduct.colors[0]; selectedSize = 'M'; }
   if (page === 'outfit-detail' && param) selectedOutfit = outfitSets.find(o => o.id === param);
@@ -230,7 +233,7 @@ function productCard(p) {
       </button>
     </div>
     <h3 class="font-medium text-sm truncate">${p.name}</h3>
-    <div class="flex justify-between items-center mt-1"><p class="font-bold text-sm">${baht(p.price)}</p><span class="text-xs text-neutral-500">★ ${p.rating} (${p.reviews})</span></div>
+    <div class="flex justify-between items-center mt-1"><p class="font-bold text-sm">${baht(p.price)}</p><button onclick="event.stopPropagation();openReviews(${p.id})" aria-label="See reviews for ${p.name}" class="text-xs text-neutral-500 hover:text-[#111] hover:underline">★ ${productStats(p).avg} (${productStats(p).total})</button></div>
     <div class="flex gap-1.5 mt-2">${p.colors.map(c => `<div class="w-3 h-3 rounded-full border border-neutral-300" style="background:${c}"></div>`).join('')}</div>
   </div>`;
 }
@@ -365,7 +368,7 @@ function renderProduct() {
       <div class="py-4">
         <span class="text-xs text-[#6f66a0] font-bold">${p.category} • ${p.style}</span>
         <h1 class="text-3xl font-extrabold mt-1">${p.name}</h1>
-        <p class="text-sm text-neutral-500 mt-2">★ ${p.rating} · ${p.reviews} reviews</p>
+        <a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false" class="inline-block text-sm text-neutral-500 mt-2 hover:text-[#111] underline-offset-2 hover:underline">★ ${productStats(p).avg} · ${productStats(p).total} reviews</a>
         <div class="text-2xl font-bold mt-4">${baht(p.price)}</div>
         <p class="text-neutral-600 mt-4">${p.desc}</p>
         <div class="mt-8"><label class="block text-sm font-bold mb-3">Color: <span class="font-normal text-neutral-600">${cName(selectedColor)}</span></label>
@@ -377,7 +380,102 @@ function renderProduct() {
           <button onclick="buyNowItem(${p.id},selectedSize,selectedColor)" class="flex-1 bg-[#111] text-white font-medium py-3.5 rounded-xl hover:bg-[#8B82B8] transition-colors">Buy now</button>
         </div>
       </div></div>
+    ${reviewsSection(p)}
     ${related(p)}</div>`;
+}
+// ---------- REVIEWS ----------
+// Placeholder sample reviews (replace with real data from your backend)
+const SAMPLE_REVIEWS = [
+  {name:'Nattapong K.',rating:5,date:'Sep 12, 2026',text:'Great quality and the fit is exactly as described. Would buy again.'},
+  {name:'Chanon P.',rating:4,date:'Aug 28, 2026',text:'Looks even better in person. Runs slightly large, so consider sizing down.'},
+  {name:'Arthit S.',rating:5,date:'Aug 15, 2026',text:'Comfortable, well made and easy to style with what I already own.'},
+  {name:'Pawin T.',rating:4,date:'Jul 30, 2026',text:'Good value for the price. Delivery was fast and packaging was neat.'},
+  {name:'Kritsada M.',rating:5,date:'Jul 9, 2026',text:'Exactly the look I wanted. Received several compliments already.'},
+  {name:'Thanakorn L.',rating:4,date:'Jun 21, 2026',text:'Solid fabric and clean finishing. The color matches the photos.'}
+];
+const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+function productStats(p) {
+  const own = reviews[p.id] || [], total = p.reviews + own.length;
+  const avg = (p.rating * p.reviews + own.reduce((a, x) => a + x.rating, 0)) / total;
+  return {avg: avg.toFixed(1), total};
+}
+function sampleFor(p) { return [0, 1, 2].map(k => SAMPLE_REVIEWS[(p.id + k) % SAMPLE_REVIEWS.length]); }
+function setRvRating(n) {
+  reviewRating = n;
+  document.querySelectorAll('[data-star]').forEach(b => { b.innerText = +b.dataset.star <= n ? '★' : '☆'; b.setAttribute('aria-pressed', +b.dataset.star === n); });
+}
+function submitReview() {
+  const name = document.getElementById('rv-name').value.trim(), text = document.getElementById('rv-text').value.trim();
+  if (!name || text.length < 5) return toast('Please add your name and a short review');
+  const id = selectedProduct.id;
+  reviews[id] = [{name, rating: reviewRating, text, date: new Date().toLocaleDateString('en-US')}, ...(reviews[id] || [])];
+  persist(); reviewRating = 5; render(); toast('Thanks for your review');
+  setTimeout(() => document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'}), 50);
+}
+let rvFilter = 'all';
+function allReviewsFor(p) {
+  const k = p.id % SAMPLE_REVIEWS.length;
+  return [...(reviews[p.id] || []), ...SAMPLE_REVIEWS.slice(k).concat(SAMPLE_REVIEWS.slice(0, k))];
+}
+function reviewCard(v) {
+  return `<article class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)]">
+    <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
+    <p class="text-sm text-neutral-700 mt-3 leading-relaxed">${esc(v.text)}</p></article>`;
+}
+function openReviews(id) {
+  nav('product', id);
+  setTimeout(() => document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'}), 150);
+}
+function openAllReviews() {
+  closeAllReviews(); rvFilter = 'all';
+  const p = selectedProduct, st = productStats(p), m = document.createElement('div');
+  m.id = 'rv-modal';
+  m.className = 'fixed inset-0 z-[70] flex items-end md:items-center justify-center bg-black/50 md:p-6';
+  m.onclick = e => { if (e.target === m) closeAllReviews(); };
+  m.innerHTML = `<div role="dialog" aria-modal="true" aria-label="All reviews" class="bg-[#F5F2EC] w-full md:max-w-2xl max-h-[85vh] rounded-t-3xl md:rounded-3xl flex flex-col">
+    <div class="flex items-center justify-between p-5 border-b border-[#24262A]/10">
+      <div><h2 class="font-bold text-lg">${esc(p.name)}</h2><p class="text-sm text-neutral-500"><span class="text-[#B88F8A]">★</span> ${st.avg} · ${allReviewsFor(p).length} reviews shown</p></div>
+      <button aria-label="Close" onclick="closeAllReviews()" class="text-3xl leading-none px-2 hover:text-[#8B82B8]">×</button></div>
+    <div id="rv-modal-body" class="overflow-y-auto p-5 space-y-4"></div></div>`;
+  document.body.appendChild(m); document.body.style.overflow = 'hidden';
+  paintAllReviews();
+}
+function setRvFilter(v) { rvFilter = v; paintAllReviews(); }
+function paintAllReviews() {
+  const body = document.getElementById('rv-modal-body'); if (!body) return;
+  const all = allReviewsFor(selectedProduct), l = rvFilter === 'all' ? all : all.filter(v => v.rating === +rvFilter);
+  body.innerHTML = `<div class="flex gap-2 overflow-x-auto no-scrollbar">${['all', 5, 4, 3, 2, 1].map(x => chip(x === 'all' ? 'All' : x + ' ★', String(rvFilter) === String(x), `setRvFilter('${x}')`)).join('')}</div>`
+    + (l.length ? l.map(reviewCard).join('') : empty('No reviews with this rating yet'));
+}
+function closeAllReviews() { document.getElementById('rv-modal')?.remove(); document.body.style.overflow = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllReviews(); });
+function reviewsSection(p) {
+  const st = productStats(p), list = [...(reviews[p.id] || []), ...sampleFor(p)];
+  const inp = 'w-full bg-white border border-[#24262A]/15 rounded-lg p-3 text-sm focus:outline-none focus:border-[#111]';
+  return `<section id="reviews" class="mt-16 pt-10 border-t border-[#24262A]/10">
+    <h2 class="text-xl font-bold mb-6">Customer reviews</h2>
+    <div class="grid lg:grid-cols-3 gap-10">
+      <div>
+        <div class="flex items-end gap-3"><span class="text-5xl font-extrabold">${st.avg}</span><span class="pb-1 text-sm text-neutral-500">out of 5</span></div>
+        <div class="text-[#B88F8A] text-lg mt-1" aria-hidden="true">${stars(st.avg)}</div>
+        <p class="text-sm text-neutral-500 mt-1">Based on ${st.total} reviews</p>
+        <div class="mt-8 space-y-3">
+          <h3 class="font-bold text-sm">Write a review</h3>
+          <div class="flex gap-1 text-2xl text-[#B88F8A]" role="group" aria-label="Your rating">${[1,2,3,4,5].map(n => `<button data-star="${n}" aria-pressed="${n === reviewRating}" aria-label="${n} star${n > 1 ? 's' : ''}" onclick="setRvRating(${n})">${n <= reviewRating ? '★' : '☆'}</button>`).join('')}</div>
+          <input id="rv-name" class="${inp}" placeholder="Your name" aria-label="Your name" maxlength="40">
+          <textarea id="rv-text" rows="4" class="${inp}" placeholder="Share your thoughts on fit, quality and style" aria-label="Your review" maxlength="500"></textarea>
+          <button onclick="submitReview()" class="w-full bg-[#111] text-white font-medium py-3 rounded-xl hover:bg-[#8B82B8] transition-colors">Submit review</button>
+        </div>
+      </div>
+      <div class="lg:col-span-2 space-y-4">
+        ${list.map(v => `<article class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)]">
+          <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
+          <p class="text-sm text-neutral-700 mt-3 leading-relaxed">${esc(v.text)}</p></article>`).join('')}
+        <button onclick="openAllReviews()" class="w-full border border-[#111] font-medium py-3 rounded-xl hover:bg-white transition-colors">View all reviews</button>
+      </div>
+    </div>
+  </section>`;
 }
 function related(p) {
   const l = products.filter(x => x.id !== p.id).map(x => ({x, s: (x.category === p.category ? 2 : 0) + (x.style === p.style ? 1 : 0)})).filter(o => o.s > 0).sort((a, b) => b.s - a.s || b.x.rating - a.x.rating).slice(0, 4).map(o => o.x);
