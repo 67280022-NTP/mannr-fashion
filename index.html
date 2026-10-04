@@ -110,9 +110,10 @@ const products = [
 const pid = id => products.find(p => p.id === id);
 const SET_DISCOUNT = 0.15;
 const outfitSets = [
- {id:'set-1',name:'Casual Everyday',style:'Casual',badge:'Recommended',cover:11,items:[11,6,9],description:'An easy, relaxed look for every day in natural tones',why:'A white shirt with wide-leg slacks and loafers feels clean, fresh and polished.'},
+ {id:'set-1',name:'Casual Everyday',style:'Casual',badge:'Recommended',cover:8,items:[8,1,14],description:'An easy, relaxed look for every day in natural tones',why:'A printed shirt with loose-fit jeans and white sneakers makes a comfortable everyday look.'},
  {id:'set-2',name:'Minimal Clean',style:'Minimal',badge:'Set',cover:5,items:[5,3,14],description:'Simple, sharp and clean. A minimal style focused on a polished finish.',why:'A white oversized tee, black jeans and white sneakers give a relaxed yet modern look.'},
- {id:'set-3',name:'Street Vibe',style:'Street Fashion',badge:'Set',cover:2,items:[2,4,12,13],description:'Bold, edgy and standout streetwear',why:'A black hoodie jacket paired with faded jeans and a cap builds a strong layered look.'}
+ {id:'set-3',name:'Street Vibe',style:'Street Fashion',badge:'Set',cover:2,items:[2,4,12,13],description:'Bold, edgy and standout streetwear',why:'A black hoodie jacket paired with faded jeans and a cap builds a strong layered look.'},
+ {id:'set-4',name:'Formal Classic',style:'Formal',badge:'Set',cover:11,items:[11,6,9],description:'A refined, polished look for work and formal occasions',why:'A clean white shirt, wide-leg slacks and leather loafers give a sharp, put-together look.'}
 ].map(s => {
   s.products = s.items.map(pid);
   s.image = pid(s.cover).image;
@@ -323,7 +324,7 @@ function renderOutfits() {
   return `<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="mb-10 text-center max-w-2xl mx-auto"><h1 class="text-3xl font-extrabold">Recommended Sets</h1>
       <p class="text-neutral-600 mt-2">Already matched for you. Save ${SET_DISCOUNT * 100}% when you buy the set.</p></div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
     ${outfitSets.map(s => `<div class="bg-white rounded-2xl overflow-hidden border border-[#24262A]/10 group cursor-pointer shadow-sm hover:shadow-md transition" onclick="nav('outfit-detail','${s.id}')">
       <div class="relative aspect-square overflow-hidden bg-neutral-100">
         <img src="${s.image}" alt="${s.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
