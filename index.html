@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANNR | Your Style, Your Manner.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Prompt & Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F5F2EC;       /* 60% Background */
+            --primary-color: #111111;  /* 20% Header / Text / CTA */
+            --card-color: #24262A;     /* 10% Card / Dark section */
+            --accent-color: #8B82B8;   /* 7% Lavender Accent */
+            --highlight-color: #B88F8A;/* 3% Highlight */
+        }
+        body { 
+            font-family: 'Prompt', 'Inter', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--primary-color); 
+        }
+        .fade-in { animation: fadeIn 0.4s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Hide scrollbar for tabs */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#8B82B8] selection:text-white">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 bg-[#F5F2EC]/90 backdrop-blur-md border-b border-[#24262A]/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-10">
+                <a href="#" onclick="switchPage('home')" class="text-2xl md:text-3xl font-extrabold tracking-widest text-[#111111]">MANNR</a>
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-[#111111]">
+                    <a href="#" onclick="switchPage('home')" class="nav-link transition-colors relative py-1 ${currentPage === 'home' ? 'text-[#8B82B8] font-bold after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#8B82B8]' : 'hover:text-[#8B82B8]'}">หน้าแรก</a>
+                    <a href="#" onclick="switchPage('shop')" class="nav-link transition-colors relative py-1 ${currentPage === 'shop' ? 'text-[#8B82B8] font-bold after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#8B82B8]' : 'hover:text-[#8B82B8]'}">สินค้าทั้งหมด</a>
+                    <a href="#" onclick="switchPage('outfits')" class="nav-link transition-colors relative py-1 ${currentPage === 'outfits' ? 'text-[#8B82B8] font-bold after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#8B82B8]' : 'hover:text-[#8B82B8]'}">ชุดเซ็ตแนะนำ</a>
+                    <a href="#" onclick="switchPage('favorites')" class="nav-link transition-colors relative py-1 ${currentPage === 'favorites' ? 'text-[#8B82B8] font-bold after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-[2px] after:bg-[#8B82B8]' : 'hover:text-[#8B82B8]'}">รายการโปรด</a>
+                </nav>
+            </div>
+
+            <!-- Right Icons -->
+            <div class="flex items-center gap-5">
+                <button onclick="switchPage('shop')" class="hover:text-[#8B82B8] transition-colors cursor-pointer" title="ค้นหาสินค้า">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </button>
+                <button onclick="switchPage('cart')" class="hover:text-[#8B82B8] transition-colors relative cursor-pointer" title="ตะกร้าสินค้า">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    <span id="cart-badge" class="absolute -top-1 -right-2 bg-[#B88F8A] text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold" style="display: none;">0</span>
+                </button>
+                <button onclick="switchPage('profile')" class="hover:text-[#8B82B8] transition-colors cursor-pointer" title="โปรไฟล์">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main id="app-container" class="flex-grow bg-[#F5F2EC]">
+        <!-- Content will be injected dynamically via JavaScript -->
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#F5F2EC] border-t border-[#24262A]/10 z-50 px-6 py-3 flex justify-between items-center pb-safe">
+        <a href="#" onclick="switchPage('home')" class="flex flex-col items-center text-[10px] ${currentPage === 'home' ? 'text-[#8B82B8] font-bold' : 'text-[#111111]'}"">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            หน้าแรก
+        </a>
+        <a href="#" onclick="switchPage('shop')" class="flex flex-col items-center text-[10px] ${currentPage === 'shop' ? 'text-[#8B82B8] font-bold' : 'text-[#111111]'}"">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+            สินค้า
+        </a>
+        <a href="#" onclick="switchPage('outfits')" class="flex flex-col items-center text-[10px] ${currentPage === 'outfits' ? 'text-[#8B82B8] font-bold' : 'text-[#111111]'}"">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+            ชุดเซ็ต
+        </a>
+        <a href="#" onclick="switchPage('favorites')" class="flex flex-col items-center text-[10px] ${currentPage === 'favorites' ? 'text-[#8B82B8] font-bold' : 'text-[#111111]'}"">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            โปรด
+        </a>
+    </nav>
+
+    <!-- Footer -->
+    <footer class="bg-[#24262A] text-[#F5F2EC] pt-16 pb-24 md:pb-16 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div>
+                <h3 class="text-2xl font-extrabold tracking-widest mb-4">MANNR</h3>
+                <p class="text-neutral-400 text-sm mb-6">“Your Style, Your Manner.” แพลตฟอร์มมัลติแบรนด์แฟชั่นชาย คัดสรรลุคที่ดีที่สุดเพื่อคุณ</p>
+                <div class="flex gap-4 text-neutral-300">
+                    <span class="hover:text-[#8B82B8] cursor-pointer font-semibold text-sm">Instagram</span>
+                    <span class="hover:text-[#8B82B8] cursor-pointer font-semibold text-sm">TikTok</span>
+                    <span class="hover:text-[#8B82B8] cursor-pointer font-semibold text-sm">Facebook</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-sm tracking-wider uppercase text-neutral-200">หมวดหมู่สินค้า</h4>
+                <ul class="space-y-3 text-sm text-neutral-400">
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">สินค้าทั้งหมด</li>
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">เสื้อ</li>
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">กางเกง</li>
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">แจ็กเก็ต</li>
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">รองเท้า</li>
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('shop')">หมวก</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-sm tracking-wider uppercase text-neutral-200">บริการลูกค้า</h4>
+                <ul class="space-y-3 text-sm text-neutral-400">
+                    <li class="hover:text-white cursor-pointer" onclick="switchPage('profile')">บัญชีของฉัน</li>
+                    <li class="hover:text-white cursor-pointer">ติดตามสถานะการจัดส่ง</li>
+                    <li class="hover:text-white cursor-pointer">การเปลี่ยน/คืนสินค้า</li>
+                    <li class="hover:text-white cursor-pointer">ติดต่อเรา</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 text-sm tracking-wider uppercase text-neutral-200">รับข่าวสารและโปรโมชัน</h4>
+                <p class="text-neutral-400 text-sm mb-4">รับแรงบันดาลใจในการแต่งตัวและส่วนลดพิเศษก่อนใคร</p>
+                <div class="flex gap-2">
+                    <input type="email" placeholder="อีเมลของคุณ" class="bg-[#111111] border border-neutral-700 px-4 py-2.5 text-sm rounded-md w-full text-white focus:outline-none focus:border-[#8B82B8]">
+                    <button class="bg-[#8B82B8] text-white px-5 py-2.5 rounded-md text-sm font-medium hover:bg-[#786fa6] transition-colors cursor-pointer">สมัคร</button>
+                </div>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-6 border-t border-neutral-800 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-400">
+            <p>© 2026 MANNR. All rights reserved.</p>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <span class="cursor-pointer hover:text-white">เงื่อนไขการให้บริการ</span>
+                <span class="cursor-pointer hover:text-white">นโยบายความเป็นส่วนตัว</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA CATALOG WITH CORRECT LOCAL IMAGE PATHS ---
+        const products = [
+            { id: 1, name: "Loose Fit Jeans", category: "กางเกง", style: "Casual", price: 1290, rating: 4.8, reviews: 124, image: "./images/กางเกงยีนส์สีฟ้า.jpg", desc: "กางเกงยีนส์ทรง Loose Fit สีฟ้าอ่อน เนื้อผ้ายีนส์คุณภาพสูง สวมใส่สบาย แมตช์ง่ายกับทุกชุด", colors: ['#9CB4D4', '#111111', '#5C4D43'] },
+            { id: 2, name: "Tone Top (Black)", category: "แจ็กเก็ต", style: "Street Fashion", price: 490, rating: 4.9, reviews: 98, image: "./images/เสื้อแจ็คเก็ต.jpg", desc: "เสื้อแจ็คเก็ตฮู้ดดี้ดีไซน์สตรีท ทรงสวย แมตช์ได้กับทุกลุค", colors: ['#111111', '#24262A', '#8B82B8'] },
+            { id: 3, name: "Black Jeans", category: "กางเกง", style: "Minimal", price: 1390, rating: 4.7, reviews: 85, image: "./images/กางเกงยีนส์สีดำ.jpg", desc: "กางเกงยีนส์สีดำเข้มทรงตรง คลาสสิก เหมาะสำหรับทุกลุคทุกโอกาส", colors: ['#111111', '#333333'] },
+            { id: 4, name: "Faded Black Jeans", category: "กางเกง", style: "Street Fashion", price: 1490, rating: 4.9, reviews: 142, image: "./images/กางเกงยีนส์สีดำเฟด.jpg", desc: "กางเกงยีนส์ฟอกเฟดสไตล์วินเทจ เท่ ดุดัน เอกลักษณ์เฉพาะตัว", colors: ['#333333', '#111111'] },
+            { id: 5, name: "Oversized Tee", category: "เสื้อ", style: "Minimal", price: 590, rating: 4.8, reviews: 210, image: "./images/เสื้อยืดสีขาว.jpg", desc: "เสื้อยืดโอเวอร์ไซส์ คอตตอนแท้ 100% สวมใส่นุ่มสบาย ระบายอากาศดีเยี่ยม", colors: ['#EFECE1', '#111111', '#B88F8A'] },
+            { id: 6, name: "Wide Leg Slacks", category: "กางเกง", style: "Minimal", price: 890, rating: 4.6, reviews: 67, image: "./images/กางเกงสแล็ค.jpg", desc: "กางเกงสแล็คทรงกว้าง สไตล์มินิมอล ใส่สบายคล่องตัว", colors: ['#111111', '#DDDDDD', '#5C4D43'] },
+            { id: 7, name: "Cute Graphic Tee", category: "เสื้อ", style: "Casual", price: 690, rating: 4.7, reviews: 92, image: "./images/เสื้อพิมพ์ลายน่ารัก.jpg", desc: "เสื้อยืดพิมพ์ลายกราฟิกน่ารักมีเอกลักษณ์ แต่งปกคอเสื้อสีฟ้าอ่อน", colors: ['#EFECE1', '#9CB4D4', '#8B82B8'] },
+            { id: 8, name: "Degi Print Shirt", category: "เสื้อ", style: "Casual", price: 790, rating: 4.8, reviews: 115, image: "./images/เสื้อฮาวาย.jpg", desc: "เสื้อเชิ้ตพิมพ์ลายคลาสสิก เนื้อผ้าเบาสบาย เหมาะสำหรับวันพักผ่อน", colors: ['#5C4D43', '#EFECE1', '#111111'] },
+            { id: 9, name: "Leather Loafers", category: "รองเท้า", style: "Minimal", price: 1690, rating: 4.9, reviews: 78, image: "./images/รองเท้าโลฟเฟอร์.jpg", desc: "รองเท้าโลฟเฟอร์หนังแท้ทรงพรีเมียม สวมใส่ง่าย ยกระดับลุคให้ดูเนี๊ยบ", colors: ['#111111', '#5C4D43', '#B88F8A'] },
+            { id: 10, name: "Vintage Tank Top", category: "เสื้อ", style: "Street Fashion", price: 450, rating: 4.5, reviews: 54, image: "./images/เสื้อกล้าม.jpg", desc: "เสื้อกล้ามสไตล์วินเทจ สวมใส่สบาย เหมาะสำหรับเป็นเลเยอร์ในลุคสตรีท", colors: ['#111111', '#FFFFFF', '#8B82B8'] },
+            { id: 11, name: "Minimal Shirt", category: "เสื้อ", style: "Minimal", price: 890, rating: 4.8, reviews: 130, image: "./images/เสื้อเชิ้ตสีขาว.jpg", desc: "เสื้อเชิ้ตแขนยาวคลีน ทรงหลวมสบาย ดีไซน์มินิมอลยอดฮิต", colors: ['#EFECE1', '#111111', '#9CB4D4'] },
+            { id: 12, name: "Signature Cap", category: "หมวก", style: "Street Fashion", price: 390, rating: 4.7, reviews: 62, image: "./images/หมวก.jpg", desc: "หมวกแก๊ปสีดำแต่งโลโก้พรีเมียม ปรับขนาดได้", colors: ['#111111', '#24262A'] },
+            { id: 13, name: "Classic Sneakers", category: "รองเท้า", style: "Street Fashion", price: 2290, rating: 4.9, reviews: 310, image: "./images/รองเท้าผ้าใบสีขาวดำ.jpg", desc: "สนีกเกอร์ดีไซน์คลาสสิก ขาว-ดำ แมตช์ได้กับทุกลุค", colors: ['#FFFFFF', '#111111', '#8B82B8'] },
+            { id: 14, name: "Clean White Sneakers", category: "รองเท้า", style: "Casual", price: 1990, rating: 4.8, reviews: 180, image: "./images/รองเท้าผ้าใบสีขาว.jpg", desc: "รองเท้าผ้าใบสีขาวคลีน ทำความสะอาดง่าย สวมใส่สบาย", colors: ['#FFFFFF', '#EFECE1'] }
+        ];
+
+        const outfitSets = [
+            {
+                id: 'set-1', name: 'Casual Everyday', style: 'Casual', badge: 'ชุดเซ็ตแนะนำ', price: 1970, original: 2270, discount: 300, rating: 4.8,
+                image: products[7].image,
+                description: 'ลุคสบายๆ ใส่ได้ทุกวัน โทนสีธรรมชาติ', why: 'เสื้อเชิ้ตสีขาว แมตช์เข้าคู่กับกางเกงสแล็คและรองเท้าโลฟเฟอร์ ให้ความรู้สึกสะอาด สดใส และเนี๊ยบ',
+                items: [products[10], products[5], products[8]]
+            },
+            {
+                id: 'set-2', name: 'Minimal Clean', style: 'Minimal', badge: 'ชุดเซ็ต', price: 2870, original: 3270, discount: 400, rating: 4.9,
+                image: products[4].image,
+                description: 'เรียบเท่ สะอาดตา สไตล์มินิมอลที่เน้นความเนี๊ยบ', why: 'เสื้อยืดโอเวอร์ไซส์สีขาว กางเกงยีนส์สีดำ ให้ภาพลักษณ์ที่ดูคล่องตัวและทันสมัย',
+                items: [products[4], products[2], products[13]]
+            },
+            {
+                id: 'set-3', name: 'Street Vibe', style: 'Street Fashion', badge: 'ชุดเซ็ต', price: 3270, original: 3770, discount: 500, rating: 4.9,
+                image: products[1].image,
+                description: 'เท่ ดุดัน และโดดเด่นในแบบฉบับสตรีทแฟชั่น', why: 'ฮู้ดดี้สีดำ แมตช์กับกางเกงยีนส์เฟดและหมวกแก๊ป สร้างเลเยอร์การแต่งตัวที่จัดจ้าน',
+                items: [products[1], products[3], products[11], products[12]]
+            }
+        ];
+
+        let cart = [];
+        let favorites = [1, 2, 5];
+        let currentPage = 'home';
+        let currentTab = 'ทั้งหมด';
+        let selectedProduct = products[0];
+        let selectedOutfit = outfitSets[0];
+        
+        let selectedSize = 'M';
+        let selectedPayment = 'promptpay';
+
+        // --- STREAMING_CHUNK: Implementing Routing and State Handlers... ---
+        function switchPage(page, param) {
+            currentPage = page;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (page === 'product' && param) selectedProduct = products.find(p => p.id === param);
+            if (page === 'outfit-detail' && param) selectedOutfit = outfitSets.find(o => o.id === param);
+            render();
+        }
+
+        function setCategoryTab(tab) {
+            currentTab = tab;
+            render();
+        }
+
+        function selectSize(size) {
+            selectedSize = size;
+            render();
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            render();
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-24 md:bottom-10 left-1/2 transform -translate-x-1/2 bg-[#111111] text-[#F5F2EC] px-6 py-3 rounded-full shadow-lg z-50 text-sm font-medium fade-in border border-[#8B82B8]/30';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) favorites = favorites.filter(f => f !== id);
+            else favorites.push(id);
+            render();
+        }
+
+        function addToCart(product, size = 'M') {
+            const existing = cart.find(item => item.product.id === product.id && item.size === size);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ product: product, size: size, qty: 1 });
+            }
+            showToast(`เพิ่ม ${product.name} ลงตะกร้าแล้ว!`);
+            updateCartBadge();
+        }
+
+        function addOutfitToCart(outfit) {
+            outfit.items.forEach(item => {
+                const existing = cart.find(i => i.product.id === item.id && i.size === 'M');
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    cart.push({ product: item, size: 'M', qty: 1 });
+                }
+            });
+            showToast(`เพิ่มชุดเซ็ต ${outfit.name} ลงตะกร้าเรียบร้อย!`);
+            updateCartBadge();
+            switchPage('cart');
+        }
+
+        function updateCartBadge() {
+            const count = cart.reduce((sum, item) => sum + item.qty, 0);
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.innerText = count;
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+        }
+
+        function render() {
+            const container = document.getElementById('app-container');
+            container.className = "fade-in flex-grow bg-[#F5F2EC]";
+            
+            if (currentPage === 'home') container.innerHTML = renderHome();
+            else if (currentPage === 'shop') container.innerHTML = renderShop();
+            else if (currentPage === 'outfits') container.innerHTML = renderOutfits();
+            else if (currentPage === 'product') container.innerHTML = renderProductDetail();
+            else if (currentPage === 'outfit-detail') container.innerHTML = renderOutfitDetail();
+            else if (currentPage === 'cart') container.innerHTML = renderCart();
+            else if (currentPage === 'checkout') container.innerHTML = renderCheckout();
+            else if (currentPage === 'success') container.innerHTML = renderSuccess();
+            else if (currentPage === 'profile') container.innerHTML = renderProfile();
+            else if (currentPage === 'favorites') container.innerHTML = renderFavorites();
+
+            updateCartBadge();
+        }
+
+        // --- STREAMING_CHUNK: Rendering Home Page with 60-30-10 Palette ---
+        function renderHome() {
+            const tabs = ['ทั้งหมด', 'เสื้อ', 'กางเกง', 'รองเท้า', 'หมวก'];
+            const filteredProducts = currentTab === 'ทั้งหมด' 
+                ? products.slice(0, 8) 
+                : products.filter(p => p.category === currentTab);
+
+            return `
+                <!-- Hero Section with index.jpg -->
+                <section class="relative h-[550px] md:h-[650px] flex items-center bg-[#111111]">
+                    <img src="./images/index.jpg" onerror="this.src='https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1920&auto=format&fit=crop'" alt="Hero Model" class="absolute inset-0 w-full h-full object-cover object-top opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#111111]/90 via-[#111111]/50 to-transparent"></div>
+                    <div class="relative max-w-7xl mx-auto px-6 sm:px-8 w-full z-10 text-[#F5F2EC]">
+                        <span class="inline-block px-3 py-1 bg-[#8B82B8] text-white text-xs font-semibold rounded-full mb-4 tracking-wider">NEW ARRIVAL</span>
+                        <h1 class="text-5xl md:text-7xl font-extrabold mb-3 uppercase tracking-tight leading-tight">DRESS LIKE<br>YOU MEAN IT.</h1>
+                        <p class="text-xl md:text-2xl font-semibold mb-2 text-[#F5F2EC]">ชุดที่ใช่ ในสไตล์ของคุณ</p>
+                        <p class="text-base text-neutral-300 mb-8 font-light">เสื้อผ้าผู้ชาย ที่ใส่ได้ในทุกวัน</p>
+                        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                            <button onclick="switchPage('outfits')" class="bg-[#8B82B8] text-white px-8 py-3.5 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-[#786fa6] transition cursor-pointer shadow-md">
+                                ดูชุดแนะนำ
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                            <button onclick="switchPage('shop')" class="border border-[#F5F2EC] bg-[#24262A]/40 backdrop-blur-sm text-[#F5F2EC] px-8 py-3.5 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-white/20 transition cursor-pointer">
+                                เลือกซื้อสินค้า
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Select Style Section -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+                    <div class="flex justify-between items-end mb-6">
+                        <h2 class="text-2xl font-bold text-[#111111]">เลือกสไตล์ที่ใช่</h2>
+                        <button onclick="switchPage('shop')" class="text-sm font-semibold text-[#8B82B8] flex items-center gap-1 hover:underline cursor-pointer">ดูทั้งหมด <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div onclick="switchPage('shop')" class="relative h-[280px] rounded-2xl overflow-hidden cursor-pointer group bg-[#24262A]">
+                            <img src="${products[7]?.image || 'https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=400&auto=format&fit=crop'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#24262A]/90 via-[#24262A]/30 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 text-[#F5F2EC]">
+                                <h3 class="text-xl font-bold">Casual</h3>
+                                <p class="text-sm text-neutral-300">ใส่สบาย ใช้ได้ทุกวัน</p>
+                            </div>
+                        </div>
+                        <div onclick="switchPage('shop')" class="relative h-[280px] rounded-2xl overflow-hidden cursor-pointer group bg-[#24262A]">
+                            <img src="${products[4]?.image || 'https://images.unsplash.com/photo-1516826957135-700ede19c6ce?q=80&w=400&auto=format&fit=crop'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#24262A]/90 via-[#24262A]/30 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 text-[#F5F2EC]">
+                                <h3 class="text-xl font-bold">Minimal</h3>
+                                <p class="text-sm text-neutral-300">เรียบง่าย แต่ดูดี</p>
+                            </div>
+                        </div>
+                        <div onclick="switchPage('shop')" class="relative h-[280px] rounded-2xl overflow-hidden cursor-pointer group bg-[#24262A]">
+                            <img src="${products[1]?.image || 'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=400&auto=format&fit=crop'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#24262A]/90 via-[#24262A]/30 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 text-[#F5F2EC]">
+                                <h3 class="text-xl font-bold">Street Fashion</h3>
+                                <p class="text-sm text-neutral-300">เท่ มีสไตล์</p>
+                            </div>
+                        </div>
+                        <div onclick="switchPage('outfits')" class="relative h-[280px] rounded-2xl overflow-hidden cursor-pointer group bg-[#24262A]">
+                            <img src="${outfitSets[0].image}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#24262A]/90 to-transparent"></div>
+                            <div class="absolute bottom-5 left-5 text-[#F5F2EC]">
+                                <span class="bg-[#B88F8A] text-white text-[10px] px-2 py-0.5 rounded font-bold mb-1 inline-block">HOT SET</span>
+                                <h3 class="text-xl font-bold">ชุดเซ็ตแนะนำ</h3>
+                                <p class="text-sm text-neutral-300">แมตช์ลุคง่ายๆ</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recommended Products -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="flex justify-between items-end mb-6">
+                        <h2 class="text-2xl font-bold text-[#111111]">สินค้าแนะนำ</h2>
+                        <button onclick="switchPage('shop')" class="text-sm font-semibold text-[#8B82B8] flex items-center gap-1 hover:underline cursor-pointer">ดูทั้งหมด <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></button>
+                    </div>
+
+                    <!-- Category Tabs -->
+                    <div class="flex gap-6 border-b border-[#24262A]/15 mb-8 overflow-x-auto no-scrollbar pb-1">
+                        ${tabs.map(tab => `
+                            <button onclick="setCategoryTab('${tab}')" class="whitespace-nowrap pb-3 text-sm font-medium transition-colors ${currentTab === tab ? 'text-[#8B82B8] border-b-2 border-[#8B82B8] font-bold' : 'text-neutral-500 hover:text-[#111111]'}">
+                                ${tab}
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <!-- Product Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+                        ${filteredProducts.length > 0 ? filteredProducts.map(p => `
+                            <div class="group cursor-pointer bg-white rounded-xl p-3 border border-[#24262A]/10 shadow-sm hover:shadow-md transition" onclick="switchPage('product', ${p.id})">
+                                <div class="relative bg-[#F5F2EC] rounded-lg overflow-hidden aspect-[4/5] mb-3">
+                                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${p.id});" class="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white transition-colors">
+                                        <svg class="w-4 h-4" fill="${favorites.includes(p.id) ? '#B88F8A' : 'none'}" stroke="${favorites.includes(p.id) ? '#B88F8A' : '#666'}" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    </button>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-sm text-[#111111] truncate">${p.name}</h3>
+                                    <p class="font-bold text-sm text-[#111111] mt-1">฿${p.price.toLocaleString()}</p>
+                                    <div class="flex gap-1.5 mt-2">
+                                        ${p.colors ? p.colors.map(c => `<div class="w-3 h-3 rounded-full border border-neutral-300 shadow-sm" style="background-color: ${c}"></div>`).join('') : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('') : '<p class="text-neutral-400 col-span-full text-center py-10">ไม่พบสินค้าในหมวดหมู่นี้</p>'}
+                    </div>
+                </section>
+
+                <!-- Banner New Collection -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="relative bg-[#24262A] rounded-2xl overflow-hidden flex flex-col md:flex-row items-center cursor-pointer shadow-lg" onclick="switchPage('shop')">
+                        <img src="${products[11]?.image || 'https://images.unsplash.com/photo-1618354691438-25bc04584c23?q=80&w=1200&auto=format&fit=crop'}" class="absolute inset-0 w-full h-full object-cover opacity-40 md:opacity-80 md:w-1/2 md:right-0 md:left-auto">
+                        <div class="relative p-10 md:p-16 w-full md:w-1/2 z-10 text-[#F5F2EC]">
+                            <span class="text-xs tracking-widest text-[#8B82B8] uppercase font-bold">New Collection</span>
+                            <h2 class="text-3xl md:text-5xl font-extrabold uppercase mt-2 mb-4 leading-tight">Minimal Look<br>Maximum Style</h2>
+                            <p class="text-neutral-300 mb-8">แต่งง่าย ใส่ได้ทุกโอกาส คัดสรรเพื่อคุณโดยเฉพาะ</p>
+                            <button class="border border-[#F5F2EC] text-[#F5F2EC] px-6 py-3 rounded-lg text-sm font-medium hover:bg-[#8B82B8] hover:border-[#8B82B8] transition flex items-center gap-2">
+                                ดูคอลเลกชันใหม่ <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // --- STREAMING_CHUNK: Rendering Shop Page... ---
+        function renderShop() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="mb-8 border-b border-[#24262A]/10 pb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <span class="text-xs text-[#8B82B8] font-bold uppercase tracking-widest">Catalog</span>
+                            <h1 class="text-3xl font-extrabold uppercase mt-1">สินค้าทั้งหมด</h1>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-[#24262A]/10 text-sm">
+                            <span class="text-neutral-500">รวมทั้งหมด:</span>
+                            <span class="font-bold text-[#111111]">${products.length} รายการ</span>
+                        </div>
+                    </div>
+                    <!-- Product Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+                        ${products.map(p => `
+                            <div class="group cursor-pointer bg-white rounded-xl p-3 border border-[#24262A]/10 shadow-sm hover:shadow-md transition" onclick="switchPage('product', ${p.id})">
+                                <div class="relative bg-[#F5F2EC] rounded-lg overflow-hidden aspect-[4/5] mb-3">
+                                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${p.id});" class="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white transition-colors">
+                                        <svg class="w-4 h-4" fill="${favorites.includes(p.id) ? '#B88F8A' : 'none'}" stroke="${favorites.includes(p.id) ? '#B88F8A' : '#666'}" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    </button>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-sm text-[#111111] truncate">${p.name}</h3>
+                                    <p class="font-bold text-sm text-[#111111] mt-1">฿${p.price.toLocaleString()}</p>
+                                    <div class="flex gap-1.5 mt-2">
+                                        ${p.colors ? p.colors.map(c => `<div class="w-3 h-3 rounded-full border border-neutral-300 shadow-sm" style="background-color: ${c}"></div>`).join('') : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK: Rendering Outfits Sets & Details... ---
+        function renderOutfits() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="mb-10 text-center max-w-2xl mx-auto">
+                        <span class="text-xs font-bold text-[#8B82B8] uppercase tracking-widest">Curated Looks</span>
+                        <h1 class="text-3xl font-extrabold uppercase mt-1">ชุดเซ็ตแนะนำ</h1>
+                        <p class="text-neutral-600 mt-2">แมตช์ไว้ให้แล้ว ไม่ต้องคิดเยอะ สวมใส่แล้วเท่ทันที</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        ${outfitSets.map(set => `
+                            <div class="bg-white rounded-2xl overflow-hidden border border-[#24262A]/10 group cursor-pointer shadow-sm hover:shadow-md transition" onclick="switchPage('outfit-detail', '${set.id}')">
+                                <div class="relative aspect-square overflow-hidden bg-neutral-100">
+                                    <img src="${set.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <span class="absolute top-4 left-4 bg-[#8B82B8] text-white text-xs px-3 py-1 rounded-full font-semibold">${set.badge}</span>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="text-lg font-bold">${set.name}</h3>
+                                        <span class="text-xs bg-[#F5F2EC] text-[#111111] px-2 py-1 rounded-md font-medium border border-[#24262A]/10">${set.style}</span>
+                                    </div>
+                                    <p class="text-sm text-neutral-600 mb-6">${set.description}</p>
+                                    <div class="flex items-center justify-between pt-4 border-t border-[#24262A]/10">
+                                        <div>
+                                            <span class="text-lg font-bold text-[#111111]">฿${set.price.toLocaleString()}</span>
+                                            <span class="text-xs text-neutral-400 line-through ml-1">฿${set.original.toLocaleString()}</span>
+                                        </div>
+                                        <button class="bg-[#111111] text-white text-xs px-4 py-2 rounded-md hover:bg-[#8B82B8] transition-colors">ดูชุดนี้</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOutfitDetail() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <button onclick="switchPage('outfits')" class="text-sm text-neutral-500 hover:text-[#111111] mb-6 inline-flex items-center gap-1 cursor-pointer">← กลับหน้าชุดเซ็ต</button>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div class="rounded-2xl overflow-hidden bg-white border border-[#24262A]/10 aspect-[4/5] shadow-sm">
+                            <img src="${selectedOutfit.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="bg-[#8B82B8]/20 text-[#8B82B8] text-xs px-3 py-1 rounded-full uppercase font-bold">${selectedOutfit.style} STYLE</span>
+                            <h1 class="text-3xl font-extrabold mt-3">${selectedOutfit.name}</h1>
+                            <div class="flex items-center gap-3 mt-3">
+                                <span class="text-2xl font-bold text-[#111111]">฿${selectedOutfit.price.toLocaleString()}</span>
+                                <span class="text-base text-neutral-400 line-through">฿${selectedOutfit.original.toLocaleString()}</span>
+                                <span class="text-xs bg-[#B88F8A] text-white px-2 py-1 rounded font-semibold">ประหยัด ฿${selectedOutfit.discount}</span>
+                            </div>
+                            <p class="text-neutral-600 mt-4 leading-relaxed">${selectedOutfit.description}</p>
+                            
+                            <div class="bg-[#24262A]/5 border border-[#24262A]/10 rounded-xl p-4 mt-6">
+                                <h4 class="font-bold text-sm text-[#8B82B8] mb-1">ทำไมชุดนี้ถึงเข้ากัน</h4>
+                                <p class="text-sm text-neutral-700">${selectedOutfit.why}</p>
+                            </div>
+
+                            <h3 class="font-bold text-base mt-8 mb-4 border-b border-[#24262A]/10 pb-2">ไอเทมในเซ็ต (${selectedOutfit.items.length} ชิ้น)</h3>
+                            <div class="space-y-3">
+                                ${selectedOutfit.items.map(item => `
+                                    <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-[#24262A]/10">
+                                        <div class="flex items-center gap-3">
+                                            <img src="${item.image}" class="w-12 h-12 object-cover rounded-md bg-[#F5F2EC]">
+                                            <div>
+                                                <h4 class="text-sm font-medium">${item.name}</h4>
+                                                <span class="text-xs text-neutral-400">฿${item.price.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="flex gap-4 mt-8">
+                                <button onclick="addOutfitToCart(selectedOutfit);" class="flex-1 bg-[#111111] text-white font-medium py-3.5 rounded-xl hover:bg-[#8B82B8] transition-colors cursor-pointer shadow-sm">เพิ่มทั้งหมดลงตะกร้า</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK: Rendering Product Detail & Interactive Cart/Checkout ---
+        function renderProductDetail() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <button onclick="switchPage('shop')" class="text-sm text-neutral-500 hover:text-[#111111] mb-6 inline-flex items-center gap-1 cursor-pointer">← กลับหน้าสินค้า</button>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Left Image -->
+                        <div class="bg-white rounded-2xl overflow-hidden aspect-[4/5] border border-[#24262A]/10 shadow-sm">
+                            <img src="${selectedProduct.image}" class="w-full h-full object-cover">
+                        </div>
+
+                        <!-- Right Info -->
+                        <div class="py-4">
+                            <span class="text-xs text-[#8B82B8] uppercase tracking-widest font-bold">${selectedProduct.category} • ${selectedProduct.style}</span>
+                            <h1 class="text-3xl font-extrabold mt-1">${selectedProduct.name}</h1>
+                            <div class="text-2xl font-bold mt-4">฿${selectedProduct.price.toLocaleString()}</div>
+                            <p class="text-neutral-600 mt-4 leading-relaxed">${selectedProduct.desc}</p>
+
+                            <!-- Size Selector -->
+                            <div class="mt-8">
+                                <label class="block text-sm font-bold mb-3">เลือกไซซ์</label>
+                                <div class="flex gap-3">
+                                    ${['S', 'M', 'L', 'XL'].map((s) => `
+                                        <button onclick="selectSize('${s}')" class="w-12 h-12 rounded-lg border ${selectedSize === s ? 'border-[#111111] bg-[#111111] text-white font-bold' : 'border-[#24262A]/20 bg-white text-[#111111] hover:border-[#111111]'} text-sm transition-colors cursor-pointer flex items-center justify-center">${s}</button>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="flex gap-4 mt-8">
+                                <button onclick="addToCart(selectedProduct, selectedSize)" class="flex-1 bg-white border border-[#111111] text-[#111111] font-medium py-3.5 rounded-xl hover:bg-neutral-100 transition-colors cursor-pointer">เพิ่มลงตะกร้า</button>
+                                <button onclick="addToCart(selectedProduct, selectedSize); switchPage('checkout');" class="flex-1 bg-[#111111] text-white font-medium py-3.5 rounded-xl hover:bg-[#8B82B8] transition-colors cursor-pointer shadow-sm">ซื้อเลย</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCart() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+            const total = subtotal + (subtotal > 0 ? 50 : 0);
+
+            return `
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <h1 class="text-2xl font-extrabold uppercase mb-8 border-b border-[#24262A]/10 pb-4">ตะกร้าสินค้า (${cart.reduce((s, i) => s + i.qty, 0)})</h1>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                        <div class="lg:col-span-2 space-y-4">
+                            ${cart.length > 0 ? cart.map((item, idx) => `
+                                <div class="bg-white rounded-xl p-4 border border-[#24262A]/10 flex items-center justify-between gap-4 shadow-sm">
+                                    <div class="flex gap-4 items-center">
+                                        <div class="w-20 h-24 bg-[#F5F2EC] rounded-lg overflow-hidden shrink-0">
+                                            <img src="${item.product.image}" class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <h3 class="font-bold text-sm">${item.product.name}</h3>
+                                            <p class="text-xs text-neutral-500 mt-1">ไซซ์: ${item.size}</p>
+                                            <span class="font-bold text-sm mt-2 block">฿${item.product.price.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-sm font-medium border border-[#24262A]/10 px-3 py-1 rounded-md">จำนวน: ${item.qty}</span>
+                                        <button onclick="cart.splice(${idx}, 1); render();" class="text-neutral-400 hover:text-[#B88F8A] p-2 cursor-pointer transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('') : '<p class="text-neutral-500 py-16 text-center bg-white rounded-xl border border-[#24262A]/10">ตะกร้าว่างเปล่า ไม่มีสินค้า</p>'}
+                        </div>
+                        
+                        ${cart.length > 0 ? `
+                        <div class="bg-white rounded-2xl p-6 h-fit border border-[#24262A]/10 shadow-sm">
+                            <h3 class="font-bold text-lg mb-4">สรุปคำสั่งซื้อ</h3>
+                            <div class="space-y-3 text-sm border-b border-[#24262A]/10 pb-4 mb-4">
+                                <div class="flex justify-between"><span class="text-neutral-500">ยอดรวม</span><span>฿${subtotal.toLocaleString()}</span></div>
+                                <div class="flex justify-between"><span class="text-neutral-500">ค่าจัดส่ง</span><span>฿50</span></div>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg mb-6"><span>ยอดรวมสุทธิ</span><span class="text-[#8B82B8]">฿${total.toLocaleString()}</span></div>
+                            <button onclick="switchPage('checkout')" class="w-full bg-[#111111] text-white font-medium py-3.5 rounded-xl hover:bg-[#8B82B8] transition-colors cursor-pointer shadow-sm">ชำระเงิน</button>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- STREAMING_CHUNK: Rendering Checkout, Success, and Profile Pages ---
+        function renderCheckout() {
+            return `
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <h1 class="text-2xl font-extrabold uppercase mb-6 border-b border-[#24262A]/10 pb-4">ชำระเงิน</h1>
+                    <div class="bg-white rounded-xl p-6 border border-[#24262A]/10 space-y-8 shadow-sm">
+                        <div>
+                            <h3 class="font-bold text-lg mb-4">ข้อมูลจัดส่ง</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div><label class="block text-xs font-medium text-neutral-500 mb-1">ชื่อ-นามสกุล</label><input type="text" value="คุณลูกค้า ทั่วไป" class="w-full bg-[#F5F2EC] border border-[#24262A]/10 rounded-lg p-3 text-sm focus:outline-none focus:border-[#111111]"></div>
+                                <div><label class="block text-xs font-medium text-neutral-500 mb-1">เบอร์โทรศัพท์</label><input type="text" value="089-123-4567" class="w-full bg-[#F5F2EC] border border-[#24262A]/10 rounded-lg p-3 text-sm focus:outline-none focus:border-[#111111]"></div>
+                                <div class="md:col-span-2"><label class="block text-xs font-medium text-neutral-500 mb-1">ที่อยู่จัดส่ง</label><input type="text" value="123/45 ถนนสุขุมวิท กรุงเทพมหานคร 10110" class="w-full bg-[#F5F2EC] border border-[#24262A]/10 rounded-lg p-3 text-sm focus:outline-none focus:border-[#111111]"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-bold text-lg mb-4">เลือกวิธีชำระเงิน</h3>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div onclick="selectPayment('promptpay')" class="${selectedPayment === 'promptpay' ? 'border-[#8B82B8] bg-[#8B82B8]/10' : 'border-[#24262A]/10 hover:border-neutral-300'} border-2 p-4 rounded-xl flex flex-col items-center justify-center cursor-pointer text-center transition">
+                                    <span class="font-bold text-sm">PromptPay</span>
+                                    <span class="text-xs text-neutral-500 mt-1">QR Code</span>
+                                </div>
+                                <div onclick="selectPayment('credit')" class="${selectedPayment === 'credit' ? 'border-[#8B82B8] bg-[#8B82B8]/10' : 'border-[#24262A]/10 hover:border-neutral-300'} border-2 p-4 rounded-xl flex flex-col items-center justify-center cursor-pointer text-center transition">
+                                    <span class="font-bold text-sm">Credit Card</span>
+                                    <span class="text-xs text-neutral-500 mt-1">Visa, Master</span>
+                                </div>
+                                <div onclick="selectPayment('cod')" class="${selectedPayment === 'cod' ? 'border-[#8B82B8] bg-[#8B82B8]/10' : 'border-[#24262A]/10 hover:border-neutral-300'} border-2 p-4 rounded-xl flex flex-col items-center justify-center cursor-pointer text-center transition col-span-2 md:col-span-1">
+                                    <span class="font-bold text-sm">COD</span>
+                                    <span class="text-xs text-neutral-500 mt-1">เก็บเงินปลายทาง</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="switchPage('success')" class="w-full bg-[#111111] text-white font-bold py-4 rounded-xl hover:bg-[#8B82B8] transition-colors mt-6 cursor-pointer shadow-sm">
+                            ยืนยันคำสั่งซื้อ
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSuccess() {
+            cart = []; 
+            return `
+                <div class="max-w-xl mx-auto px-4 py-20 text-center">
+                    <div class="w-16 h-16 bg-[#8B82B8]/20 text-[#8B82B8] rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">✓</div>
+                    <h1 class="text-2xl font-extrabold uppercase">สั่งซื้อสำเร็จ</h1>
+                    <p class="text-neutral-500 mt-2 text-sm">เลขที่คำสั่งซื้อ <span class="font-bold text-[#111111]">#MN20261004</span></p>
+                    <button onclick="switchPage('home')" class="mt-8 bg-[#111111] text-white px-8 py-3 rounded-xl font-medium hover:bg-[#8B82B8] transition-colors cursor-pointer shadow-sm">กลับไปหน้าแรก</button>
+                </div>
+            `;
+        }
+
+        function renderProfile() {
+            return `
+                <div class="max-w-4xl mx-auto px-4 py-10 text-center">
+                    <div class="w-20 h-20 bg-[#24262A] text-white rounded-full mx-auto mb-4 flex items-center justify-center text-2xl font-bold">M</div>
+                    <h1 class="text-2xl font-bold">คุณลูกค้า MANNR</h1>
+                    <p class="text-neutral-500 text-sm mt-1">สมาชิกทั่วไป</p>
+                    <div class="mt-10 max-w-sm mx-auto space-y-4 text-left">
+                        <div onclick="switchPage('shop')" class="p-4 bg-white border border-[#24262A]/10 rounded-xl font-medium cursor-pointer hover:border-[#8B82B8]">ประวัติคำสั่งซื้อ</div>
+                        <div onclick="switchPage('favorites')" class="p-4 bg-white border border-[#24262A]/10 rounded-xl font-medium cursor-pointer hover:border-[#8B82B8]">รายการโปรด</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFavorites() {
+            const favProducts = products.filter(p => favorites.includes(p.id));
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <h1 class="text-2xl font-extrabold uppercase mb-8 border-b border-[#24262A]/10 pb-4">รายการโปรด</h1>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 gap-y-8">
+                        ${favProducts.length > 0 ? favProducts.map(p => `
+                            <div class="group cursor-pointer bg-white rounded-xl p-3 border border-[#24262A]/10 shadow-sm" onclick="switchPage('product', ${p.id})">
+                                <div class="relative bg-[#F5F2EC] rounded-lg overflow-hidden aspect-[4/5] mb-3">
+                                    <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <button onclick="event.stopPropagation(); toggleFavorite(${p.id});" class="absolute top-3 right-3 p-1.5 rounded-full bg-white/80 hover:bg-white transition-colors">
+                                        <svg class="w-4 h-4" fill="${favorites.includes(p.id) ? '#B88F8A' : 'none'}" stroke="${favorites.includes(p.id) ? '#B88F8A' : '#666'}" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                                    </button>
+                                </div>
+                                <h3 class="font-medium text-sm text-[#111111] truncate">${p.name}</h3>
+                                <p class="font-bold text-sm text-[#111111] mt-1">฿${p.price.toLocaleString()}</p>
+                            </div>
+                        `).join('') : '<p class="text-neutral-500 py-10 col-span-full text-center bg-white rounded-xl border border-[#24262A]/10">ไม่มีสินค้าที่ชอบ</p>'}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Start Application
+        render();
+    </script>
+</body>
+</html>
