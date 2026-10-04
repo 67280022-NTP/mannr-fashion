@@ -97,12 +97,12 @@ const products = [
  {id:3,name:"Black Jeans",category:"Pants",style:"Minimal",price:1390,rating:4.7,reviews:85,image:"./images/กางเกงยีนส์สีดำ.jpg",desc:"Dark black straight-leg jeans. A classic for every look and occasion.",colors:['#111111','#333333']},
  {id:4,name:"Faded Black Jeans",category:"Pants",style:"Street Fashion",price:1490,rating:4.9,reviews:142,image:"./images/กางเกงยีนส์สีดำเฟด.jpg",desc:"Vintage-washed faded jeans with a bold, one-of-a-kind character.",colors:['#333333','#111111']},
  {id:5,name:"Oversized Tee",category:"Tops",style:"Minimal",price:590,rating:4.8,reviews:210,image:"./images/เสื้อยืดสีขาว.jpg",desc:"Oversized tee in 100% cotton. Soft, comfortable and breathable.",colors:['#EFECE1','#111111','#B88F8A']},
- {id:6,name:"Wide Leg Slacks",category:"Pants",style:"Minimal",price:890,rating:4.6,reviews:67,image:"./images/กางเกงสแล็ค.jpg",desc:"Wide-leg slacks in a minimal style. Comfortable and easy to move in.",colors:['#111111','#DDDDDD','#5C4D43']},
+ {id:6,name:"Wide Leg Slacks",category:"Pants",style:"Formal",price:890,rating:4.6,reviews:67,image:"./images/กางเกงสแล็ค.jpg",desc:"Wide-leg slacks in a minimal style. Comfortable and easy to move in.",colors:['#111111','#DDDDDD','#5C4D43']},
  {id:7,name:"Cute Graphic Tee",category:"Tops",style:"Casual",price:690,rating:4.7,reviews:92,image:"./images/เสื้อพิมพ์ลายน่ารัก.jpg",desc:"Cute graphic tee with a unique print and a light-blue collar trim.",colors:['#EFECE1','#9CB4D4','#8B82B8']},
  {id:8,name:"Degi Print Shirt",category:"Tops",style:"Casual",price:790,rating:4.8,reviews:115,image:"./images/เสื้อฮาวาย.jpg",desc:"Classic print shirt in a lightweight fabric, perfect for days off.",colors:['#5C4D43','#EFECE1','#111111']},
- {id:9,name:"Leather Loafers",category:"Shoes",style:"Minimal",price:1690,rating:4.9,reviews:78,image:"./images/รองเท้าโลฟเฟอร์.jpg",desc:"Premium genuine-leather loafers. Easy to slip on and instantly sharpen any look.",colors:['#111111','#5C4D43','#B88F8A']},
+ {id:9,name:"Leather Loafers",category:"Shoes",style:"Formal",price:1690,rating:4.9,reviews:78,image:"./images/รองเท้าโลฟเฟอร์.jpg",desc:"Premium genuine-leather loafers. Easy to slip on and instantly sharpen any look.",colors:['#111111','#5C4D43','#B88F8A']},
  {id:10,name:"Vintage Tank Top",category:"Tops",style:"Street Fashion",price:450,rating:4.5,reviews:54,image:"./images/เสื้อกล้าม.jpg",desc:"Vintage-style tank top, great as a layer in streetwear looks.",colors:['#111111','#FFFFFF','#8B82B8']},
- {id:11,name:"Minimal Shirt",category:"Tops",style:"Minimal",price:890,rating:4.8,reviews:130,image:"./images/เสื้อเชิ้ตสีขาว.jpg",desc:"Clean long-sleeve shirt with a relaxed fit and a popular minimal design.",colors:['#EFECE1','#111111','#9CB4D4']},
+ {id:11,name:"Minimal Shirt",category:"Tops",style:"Formal",price:890,rating:4.8,reviews:130,image:"./images/เสื้อเชิ้ตสีขาว.jpg",desc:"Clean long-sleeve shirt with a relaxed fit and a popular minimal design.",colors:['#EFECE1','#111111','#9CB4D4']},
  {id:12,name:"Signature Cap",category:"Caps",style:"Street Fashion",price:390,rating:4.7,reviews:62,image:"./images/หมวก.jpg",desc:"Black cap with a premium logo and an adjustable fit.",colors:['#111111','#24262A']},
  {id:13,name:"Classic Sneakers",category:"Shoes",style:"Street Fashion",price:2290,rating:4.9,reviews:310,image:"./images/รองเท้าผ้าใบสีขาวดำ.jpg",desc:"Classic black-and-white sneakers that go with every look.",colors:['#FFFFFF','#111111','#8B82B8']},
  {id:14,name:"Clean White Sneakers",category:"Shoes",style:"Casual",price:1990,rating:4.8,reviews:180,image:"./images/รองเท้าผ้าใบสีขาว.jpg",desc:"Clean white canvas sneakers. Easy to wash and comfortable to wear.",colors:['#FFFFFF','#EFECE1']}
@@ -297,7 +297,7 @@ function filtered() {
 function setF(k, v) { f[k] = v; render(); }
 function onSearch(v) { f.q = v; const l = filtered(); document.getElementById('shop-grid').innerHTML = l.length ? grid(l) : empty('No products match your filters'); document.getElementById('shop-count').innerText = l.length + ' items'; }
 function renderShop() {
-  const cats = ['All', 'Tops', 'Jackets', 'Pants', 'Shoes', 'Caps'], styles = ['All', 'Casual', 'Minimal', 'Street Fashion'];
+  const cats = ['All', 'Tops', 'Jackets', 'Pants', 'Shoes', 'Caps'], styles = ['All', 'Casual', 'Minimal', 'Formal', 'Street Fashion'];
   const l = filtered();
   return `<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="mb-6 flex flex-col md:flex-row justify-between md:items-center gap-4">
