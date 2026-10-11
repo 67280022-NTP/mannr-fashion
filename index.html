@@ -27,6 +27,7 @@ body{font-family:'Inter','Prompt',sans-serif;background:#F5F2EC;color:#111}
         <a href="#" data-page="home" onclick="return nav('home')" class="hover:text-[#8B82B8]">Home</a>
         <a href="#" data-page="shop" onclick="return nav('shop')" class="hover:text-[#8B82B8]">All Products</a>
         <a href="#" data-page="outfits" onclick="return nav('outfits')" class="hover:text-[#8B82B8]">Recommended Sets</a>
+        <a href="#" data-page="finder" onclick="return nav('finder')" class="hover:text-[#8B82B8]">Find My Outfit</a>
         <a href="#" data-page="favorites" onclick="return nav('favorites')" class="hover:text-[#8B82B8]">Wishlist</a>
       </nav>
     </div>
@@ -47,6 +48,7 @@ body{font-family:'Inter','Prompt',sans-serif;background:#F5F2EC;color:#111}
   <a href="#" data-page="home" onclick="return nav('home')" class="flex flex-col items-center">Home</a>
   <a href="#" data-page="shop" onclick="return nav('shop')" class="flex flex-col items-center">Shop</a>
   <a href="#" data-page="outfits" onclick="return nav('outfits')" class="flex flex-col items-center">Sets</a>
+  <a href="#" data-page="finder" onclick="return nav('finder')" class="flex flex-col items-center">Find</a>
   <a href="#" data-page="favorites" onclick="return nav('favorites')" class="flex flex-col items-center">Saved</a>
 </nav>
 
@@ -54,7 +56,7 @@ body{font-family:'Inter','Prompt',sans-serif;background:#F5F2EC;color:#111}
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-10">
     <div>
       <h3 class="text-2xl font-extrabold tracking-widest mb-4">MANNR</h3>
-      <p class="text-neutral-400 text-sm">“Your Style, Your Manner.” A multi-brand menswear platform. The best looks, curated for you.</p>
+      <p class="text-neutral-400 text-sm">“Your Style, Your Manner.” Menswear designed by MANNR, made to be worn every day.</p>
     </div>
     <div>
       <h4 class="font-bold mb-4 text-sm text-neutral-200">Categories</h4>
@@ -71,9 +73,10 @@ body{font-family:'Inter','Prompt',sans-serif;background:#F5F2EC;color:#111}
       <h4 class="font-bold mb-4 text-sm text-neutral-200">Customer Service</h4>
       <ul class="space-y-3 text-sm text-neutral-400">
         <li><a href="#" class="hover:text-white" onclick="return nav('profile')">My account</a></li>
-        <li>Track your order</li>
-        <li>Returns & exchanges</li>
-        <li>Contact us</li>
+        <li><a href="#" class="hover:text-white" onclick="return nav('track')">Track your order</a></li>
+        <li><a href="#" class="hover:text-white" onclick="return nav('policy','returns')">Returns & exchanges</a></li>
+        <li><a href="#" class="hover:text-white" onclick="return nav('policy','shipping')">Shipping information</a></li>
+        <li><a href="#" class="hover:text-white" onclick="return nav('policy','contact')">Contact us</a></li>
       </ul>
     </div>
     <div>
@@ -85,28 +88,14 @@ body{font-family:'Inter','Prompt',sans-serif;background:#F5F2EC;color:#111}
     </div>
   </div>
   <div class="max-w-7xl mx-auto px-4 mt-12 pt-6 border-t border-neutral-800 text-xs text-neutral-400">
-    <p>© <span id="year"></span> MANNR. All rights reserved.</p>
+    <div class="flex flex-col md:flex-row justify-between gap-3"><p>© <span id="year"></span> MANNR. All rights reserved.</p>
+      <div class="flex gap-4"><a href="#" class="hover:text-white" onclick="return nav('policy','terms')">Terms of Service</a><a href="#" class="hover:text-white" onclick="return nav('policy','privacy')">Privacy Policy</a></div></div>
   </div>
 </footer>
 
+<script src="./products.js"></script>
 <script>
 // ---------- DATA ----------
-const products = [
- {id:1,name:"Loose Fit Jeans",category:"Pants",style:"Casual",price:1290,rating:4.8,reviews:124,image:"./images/กางเกงยีนส์สีฟ้า.jpg",desc:"Light-blue loose-fit jeans in quality denim. Comfortable to wear and easy to match with any outfit.",colors:['#9CB4D4','#111111','#5C4D43']},
- {id:2,name:"Tone Hoodie Jacket (Black)",category:"Jackets",style:"Street Fashion",price:490,rating:4.9,reviews:98,image:"./images/เสื้อแจ็คเก็ต.jpg",desc:"Streetwear hoodie jacket with a sharp cut that pairs with any look.",colors:['#111111','#24262A','#8B82B8']},
- {id:3,name:"Black Jeans",category:"Pants",style:"Minimal",price:1390,rating:4.7,reviews:85,image:"./images/กางเกงยีนส์สีดำ.jpg",desc:"Dark black straight-leg jeans. A classic for every look and occasion.",colors:['#111111','#333333']},
- {id:4,name:"Faded Black Jeans",category:"Pants",style:"Street Fashion",price:1490,rating:4.9,reviews:142,image:"./images/กางเกงยีนส์สีดำเฟด.jpg",desc:"Vintage-washed faded jeans with a bold, one-of-a-kind character.",colors:['#333333','#111111']},
- {id:5,name:"Oversized Tee",category:"Tops",style:"Minimal",price:590,rating:4.8,reviews:210,image:"./images/เสื้อยืดสีขาว.jpg",desc:"Oversized tee in 100% cotton. Soft, comfortable and breathable.",colors:['#EFECE1','#111111','#B88F8A']},
- {id:6,name:"Wide Leg Slacks",category:"Pants",style:"Formal",price:890,rating:4.6,reviews:67,image:"./images/กางเกงสแล็ค.jpg",desc:"Wide-leg slacks in a minimal style. Comfortable and easy to move in.",colors:['#111111','#DDDDDD','#5C4D43']},
- {id:7,name:"Cute Graphic Tee",category:"Tops",style:"Casual",price:690,rating:4.7,reviews:92,image:"./images/เสื้อพิมพ์ลายน่ารัก.jpg",desc:"Cute graphic tee with a unique print and a light-blue collar trim.",colors:['#EFECE1','#9CB4D4','#8B82B8']},
- {id:8,name:"Degi Print Shirt",category:"Tops",style:"Casual",price:790,rating:4.8,reviews:115,image:"./images/เสื้อฮาวาย.jpg",desc:"Classic print shirt in a lightweight fabric, perfect for days off.",colors:['#5C4D43','#EFECE1','#111111']},
- {id:9,name:"Leather Loafers",category:"Shoes",style:"Formal",price:1690,rating:4.9,reviews:78,image:"./images/รองเท้าโลฟเฟอร์.jpg",desc:"Premium genuine-leather loafers. Easy to slip on and instantly sharpen any look.",colors:['#111111','#5C4D43','#B88F8A']},
- {id:10,name:"Vintage Tank Top",category:"Tops",style:"Street Fashion",price:450,rating:4.5,reviews:54,image:"./images/เสื้อกล้าม.jpg",desc:"Vintage-style tank top, great as a layer in streetwear looks.",colors:['#111111','#FFFFFF','#8B82B8']},
- {id:11,name:"Minimal Shirt",category:"Tops",style:"Formal",price:890,rating:4.8,reviews:130,image:"./images/เสื้อเชิ้ตสีขาว.jpg",desc:"Clean long-sleeve shirt with a relaxed fit and a popular minimal design.",colors:['#EFECE1','#111111','#9CB4D4']},
- {id:12,name:"Signature Cap",category:"Caps",style:"Street Fashion",price:390,rating:4.7,reviews:62,image:"./images/หมวก.jpg",desc:"Black cap with a premium logo and an adjustable fit.",colors:['#111111','#24262A']},
- {id:13,name:"Classic Sneakers",category:"Shoes",style:"Street Fashion",price:2290,rating:4.9,reviews:310,image:"./images/รองเท้าผ้าใบสีขาวดำ.jpg",desc:"Classic black-and-white sneakers that go with every look.",colors:['#FFFFFF','#111111','#8B82B8']},
- {id:14,name:"Clean White Sneakers",category:"Shoes",style:"Casual",price:1990,rating:4.8,reviews:180,image:"./images/รองเท้าผ้าใบสีขาว.jpg",desc:"Clean white canvas sneakers. Easy to wash and comfortable to wear.",colors:['#FFFFFF','#EFECE1']}
-];
 const pid = id => products.find(p => p.id === id);
 const SET_DISCOUNT = 0.15;
 const outfitSets = [
@@ -128,7 +117,7 @@ const load = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) ?? d; 
 const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
 // cart items store only {id,size,qty}
 let cart = load('mannr_cart', []);
-let favorites = load('mannr_fav', [1, 2, 5]);
+let favorites = load('mannr_fav', []);
 let orders = load('mannr_orders', []);
 let reviews = load('mannr_reviews', {}); // {productId: [{name,rating,text,date}]}
 let reviewRating = 5;
@@ -148,18 +137,105 @@ const sumOf = list => lines(list).reduce((s, i) => s + i.product.price * i.qty, 
 const persist = () => { save('mannr_cart', cart); save('mannr_fav', favorites); save('mannr_orders', orders); save('mannr_reviews', reviews); };
 
 // ---------- ACTIONS ----------
-function nav(page, param) {
+// ---------- ROUTING (hash-based: back button, shareable links) ----------
+const PAGE_RENDERERS = {home: renderHome, shop: renderShop, outfits: renderOutfits, finder: renderFinder, product: renderProduct, 'outfit-detail': renderOutfitDetail, cart: renderCart, checkout: renderCheckout, success: renderSuccess, profile: renderProfile, favorites: renderFavorites, policy: renderPolicy, track: renderTrack};
+const PAGE_TITLES = {home: 'MANNR | Your Style, Your Manner.', shop: 'All Products', outfits: 'Recommended Sets', finder: 'Find My Outfit', cart: 'Shopping Cart', checkout: 'Checkout', success: 'Order Placed', profile: 'My Account', favorites: 'Wishlist', track: 'Track Your Order'};
+let selectedPolicy = 'privacy';
+function show(page, param) {
   closeAllReviews();
-  currentPage = page;
-  if (page === 'product' && param) { selectedProduct = pid(param); selectedColor = selectedProduct.colors[0]; selectedSize = 'M'; }
-  if (page === 'outfit-detail' && param) selectedOutfit = outfitSets.find(o => o.id === param);
+  if (!PAGE_RENDERERS[page]) page = 'home';
+  let title = PAGE_TITLES[page];
+  if (page === 'product') {
+    const p = pid(+param); if (!p) return nav('shop');
+    selectedProduct = p; selectedColor = p.colors[0]; selectedSize = 'M'; title = p.name;
+  }
+  if (page === 'outfit-detail') {
+    const o = outfitSets.find(x => x.id === param); if (!o) return nav('outfits');
+    selectedOutfit = o; title = o.name;
+  }
+  if (page === 'policy') { selectedPolicy = POLICIES[param] ? param : 'privacy'; title = POLICIES[selectedPolicy].title; }
   if (page === 'checkout' && param !== 'buynow') buyNow = null;
+  if (page === 'success' && !lastOrder) return nav('home');
+  currentPage = page;
+  document.title = page === 'home' ? title : title + ' | MANNR';
   window.scrollTo({top: 0, behavior: 'smooth'});
   render();
+}
+function nav(page, param) {
+  const h = '#/' + page + (param != null && param !== '' ? '/' + param : '');
+  if (location.hash === h) show(page, param); else location.hash = h;
   return false;
 }
+function route() {
+  const [p, ...rest] = location.hash.replace(/^#\/?/, '').split('/');
+  show(p || 'home', rest.join('/') || undefined);
+}
+function goNew() { f = {cat: 'All', style: 'All', sort: 'new', q: ''}; return nav('shop'); }
+
+// ---------- POLICY PAGES ----------
+// Edit BUSINESS and the text below to match your real business. Have the final wording reviewed before launch.
+const BUSINESS = {name: 'MANNR', email: '1234@mannr.com', phone: '0X-XXX-XXXX', address: 'Bangkok, Thailand', hours: 'Mon–Fri, 10:00–18:00 (GMT+7)'};
+const POLICIES = {
+  returns: {short: 'Returns', title: 'Returns & Exchanges', updated: 'October 2026', sections: [
+    ['Return window', [`You can return or exchange an item within 7 days of delivery, as long as it is unworn, unwashed, with all tags attached and in its original packaging.`]],
+    ['Faulty or incorrect items', [`If your item arrives damaged, faulty or is not what you ordered, contact us within 7 days of delivery with a photo. We will exchange it or refund you in full, including shipping.`]],
+    ['Sets', [`Items bought in a set are discounted as a set. If you return only part of a set, the remaining items are re-priced at their regular prices.`]],
+    ['How to start a return', [`Email ${BUSINESS.email} with your order number and the item(s) you want to return. We will reply with the next steps.`]],
+    ['Refunds', [`Approved refunds are sent to your original payment method within 7–14 business days after we receive the item. Original shipping fees are refunded only for faulty or incorrect items.`]],
+    ['Not returnable', [`Items that have been worn, washed or altered, and items returned without tags.`]]]},
+  shipping: {short: 'Shipping', title: 'Shipping Information', updated: 'October 2026', sections: [
+    ['Where we deliver', [`We currently deliver within Thailand only.`]],
+    ['Processing and delivery time', [`Orders are packed within 1–2 business days. Delivery usually takes 2–5 business days after dispatch.`]],
+    ['Shipping fee', [`A flat shipping fee of ${baht(SHIPPING)} applies to each order.`]],
+    ['Tracking', [`We email you a tracking number once your order ships. You can also check your order on the Track your order page.`]]]},
+  privacy: {short: 'Privacy', title: 'Privacy Policy', updated: 'October 2026', sections: [
+    ['What we collect', [`When you order, we collect your name, phone number and delivery address. If you subscribe to our newsletter, we collect your email. Your cart, wishlist and reviews are stored in your browser on your device.`]],
+    ['How we use it', [`We use your information to process and deliver orders, contact you about your order, provide customer support and, if you opt in, send you news and offers.`]],
+    ['Sharing', [`We share only what is needed with delivery and payment providers to fulfil your order. We do not sell your personal data.`]],
+    ['How long we keep it', [`We keep order records for as long as needed for accounting and legal purposes, and newsletter details until you unsubscribe.`]],
+    ['Your rights', [`Under Thailand's Personal Data Protection Act (PDPA), you may ask to access, correct or delete your personal data, or withdraw your consent. Contact us at ${BUSINESS.email}.`]],
+    ['Contact', [`${BUSINESS.name}, ${BUSINESS.address}.`]]]},
+  terms: {short: 'Terms', title: 'Terms of Service', updated: 'October 2026', sections: [
+    ['Orders', [`When you place an order, we send a confirmation. We may cancel an order if an item is unavailable or a pricing error occurs, and will refund any payment made.`]],
+    ['Prices and payment', [`Prices are shown in Thai baht (฿). Payment must be completed using one of the methods offered at checkout.`]],
+    ['Products', [`We try to show colors and details accurately, but they may vary slightly depending on your screen.`]],
+    ['Returns and shipping', [`Our Returns & Exchanges and Shipping Information pages form part of these terms.`]],
+    ['Intellectual property', [`All content on this site, including text, images and designs, belongs to ${BUSINESS.name} and may not be copied or used without permission.`]],
+    ['Liability', [`To the extent permitted by law, ${BUSINESS.name} is not liable for indirect or consequential losses arising from the use of this site.`]],
+    ['Changes and governing law', [`We may update these terms from time to time. These terms are governed by the laws of Thailand.`]]]},
+  contact: {short: 'Contact', title: 'Contact Us', updated: 'October 2026', sections: [
+    ['Customer support', [`Email: <a class="underline" href="mailto:${BUSINESS.email}">${BUSINESS.email}</a>`, `Phone: ${BUSINESS.phone}`, `Hours: ${BUSINESS.hours}`]],
+    ['Address', [BUSINESS.address]],
+    ['Order questions', [`Please include your order number so we can help you faster.`]]]}
+};
+function renderPolicy() {
+  const pol = POLICIES[selectedPolicy];
+  return `<div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex gap-2 overflow-x-auto no-scrollbar mb-8">${Object.entries(POLICIES).map(([k, v]) => chip(v.short, k === selectedPolicy, `nav('policy','${k}')`)).join('')}</div>
+    <h1 class="text-3xl font-extrabold">${pol.title}</h1>
+    <p class="text-sm text-neutral-500 mt-1">Last updated: ${pol.updated}</p>
+    ${pol.sections.map(([h, t]) => `<section class="mt-8"><h2 class="font-bold text-lg mb-2">${h}</h2><div class="text-neutral-700 leading-relaxed space-y-2">${t.map(x => `<p>${x}</p>`).join('')}</div></section>`).join('')}
+  </div>`;
+}
+function renderTrack() {
+  return `<div class="max-w-xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-extrabold">Track your order</h1>
+    <p class="text-neutral-600 mt-2">Enter the order number from your confirmation, for example MN12345678.</p>
+    <div class="flex gap-2 mt-6"><input id="track-no" aria-label="Order number" placeholder="Order number" onkeydown="if(event.key==='Enter')trackLookup()" class="flex-1 bg-white border border-[#24262A]/15 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#8B82B8]"><button onclick="trackLookup()" class="bg-[#111] text-white px-6 rounded-xl hover:bg-[#8B82B8] transition-colors">Track</button></div>
+    <div id="track-result" class="mt-6" aria-live="polite"></div></div>`;
+}
+function trackLookup() {
+  const q = document.getElementById('track-no').value.trim().replace(/^#/, '').toUpperCase(), o = orders.find(x => x.no === q);
+  document.getElementById('track-result').innerHTML = o
+    ? `<div class="bg-white rounded-2xl p-5"><div class="flex justify-between font-bold"><span>#${esc(o.no)}</span><span>${baht(o.total)}</span></div>
+        <p class="text-sm text-neutral-500 mt-1">${esc(o.date)} · ${o.items.reduce((s, i) => s + i.qty, 0)} items</p>
+        <p class="mt-4 text-sm"><span class="inline-block bg-[#8B82B8]/15 text-[#6f66a0] font-semibold px-3 py-1 rounded-full">Order received</span></p>
+        <p class="text-sm text-neutral-600 mt-3">We will email you a tracking number once your order ships.</p></div>`
+    : `<div class="bg-white rounded-2xl p-5 text-sm text-neutral-600">We couldn't find that order on this device. Please check the number, or <a href="#" class="underline" onclick="return nav('policy','contact')">contact us</a>.</div>`;
+}
+
 function goCat(cat) { f = {cat, style: 'All', sort: 'default', q: ''}; return nav('shop'); }
-function openSearch() { nav('shop'); setTimeout(() => document.getElementById('search-input')?.focus(), 50); }
+function openSearch() { nav('shop'); setTimeout(() => document.getElementById('search-input')?.focus(), 200); }
 function toast(msg) {
   const t = document.createElement('div');
   t.className = 'fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 bg-[#111] text-[#F5F2EC] px-6 py-3 rounded-full shadow-lg z-[60] text-sm font-medium fade-in border border-[#8B82B8]/30';
@@ -214,7 +290,7 @@ function updateNav() {
   document.querySelectorAll('[data-page]').forEach(el => el.classList.toggle('nav-on', el.dataset.page === active));
 }
 function render() {
-  const pages = {home: renderHome, shop: renderShop, outfits: renderOutfits, product: renderProduct, 'outfit-detail': renderOutfitDetail, cart: renderCart, checkout: renderCheckout, success: renderSuccess, profile: renderProfile, favorites: renderFavorites};
+  const pages = PAGE_RENDERERS;
   const c = document.getElementById('app-container');
   c.className = 'fade-in flex-grow';
   c.innerHTML = pages[currentPage]();
@@ -233,7 +309,7 @@ function productCard(p) {
       </button>
     </div>
     <h3 class="font-medium text-sm truncate">${p.name}</h3>
-    <div class="flex justify-between items-center mt-1"><p class="font-bold text-sm">${baht(p.price)}</p><button onclick="event.stopPropagation();openReviews(${p.id})" aria-label="See reviews for ${p.name}" class="text-xs text-neutral-500 hover:text-[#111] hover:underline">★ ${productStats(p).avg} (${productStats(p).total})</button></div>
+    <div class="flex justify-between items-center mt-1"><p class="font-bold text-sm">${baht(p.price)}</p><button onclick="event.stopPropagation();openReviews(${p.id})" aria-label="See reviews for ${p.name}" class="text-xs text-neutral-500 hover:text-[#111] hover:underline">${productStats(p).none ? 'New' : '★ ' + productStats(p).avg + ' (' + productStats(p).total + ')'}</button></div>
     <div class="flex gap-1.5 mt-2">${p.colors.map(c => `<div class="w-3 h-3 rounded-full border border-neutral-300" style="background:${c}"></div>`).join('')}</div>
   </div>`;
 }
@@ -245,7 +321,7 @@ const chip = (label, on, fn) => `<button onclick="${fn}" class="whitespace-nowra
 function renderHome() {
   const tabs = ['All', 'Tops', 'Jackets', 'Pants', 'Shoes', 'Caps'];
   const list = currentTab === 'All' ? products.slice(0, 8) : products.filter(p => p.category === currentTab);
-  const tiles = [['Casual', 'Comfortable, everyday wear', 8, "goCat('All')"], ['Minimal', 'Simple, yet sharp', 5, "goCat('All')"], ['Street Fashion', 'Bold and stylish', 2, "goCat('All')"], ['Recommended Sets', 'Easy-to-match looks', 11, "nav('outfits')"]];
+  const tiles = [['Casual', 'Comfortable, everyday wear', 8, "setStyle('Casual')"], ['Minimal', 'Simple, yet sharp', 5, "setStyle('Minimal')"], ['Formal', 'Sharp for work and events', 24, "setStyle('Formal')"], ['Street Fashion', 'Bold and stylish', 2, "setStyle('Street Fashion')"], ['Recommended Sets', 'Easy-to-match looks', 11, "nav('outfits')"]];
   return `
   <section class="relative h-[550px] md:h-[650px] flex items-center bg-[#111]">
     <img src="./images/index.jpg" onerror="this.src='https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1920&auto=format&fit=crop'" alt="MANNR" class="absolute inset-0 w-full h-full object-cover object-top opacity-80">
@@ -257,17 +333,23 @@ function renderHome() {
       <div class="flex flex-col sm:flex-row gap-4 sm:w-auto">
         <button onclick="nav('outfits')" class="bg-[#8B82B8] text-white px-8 py-3.5 rounded-full font-medium hover:bg-[#786fa6] transition">View recommended sets</button>
         <button onclick="goCat('All')" class="border border-[#F5F2EC] bg-[#24262A]/40 text-[#F5F2EC] px-8 py-3.5 rounded-full font-medium hover:bg-white/20 transition">Shop now</button>
+        <button onclick="nav('finder')" class="bg-[#F5F2EC] text-[#111] px-8 py-3.5 rounded-full font-medium hover:bg-white transition">Find my outfit</button>
       </div>
     </div>
   </section>
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
     <h2 class="text-2xl font-bold mb-6">Find your style</h2>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-      ${tiles.map(t => `<div onclick="${t[3].replace('goCat(\'All\')', `setStyle('${t[0]}')`)}" class="relative h-[320px] rounded-3xl overflow-hidden cursor-pointer group bg-[#24262A]">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      ${tiles.map(t => `<div onclick="${t[3]}" class="relative h-[260px] md:h-[300px] rounded-3xl overflow-hidden cursor-pointer group bg-[#24262A]">
         <img src="${pid(t[2]).image}" alt="${t[0]}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-700 opacity-85">
         <div class="absolute inset-0 bg-gradient-to-t from-[#24262A]/90 via-[#24262A]/30 to-transparent"></div>
         <div class="absolute bottom-5 left-5 text-[#F5F2EC]"><h3 class="text-xl font-bold">${t[0]}</h3><p class="text-sm text-neutral-300">${t[1]}</p></div></div>`).join('')}
     </div>
+  </section>
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="flex justify-between items-end mb-6"><h2 class="text-2xl font-bold">New Arrivals</h2>
+      <button onclick="goNew()" class="text-sm font-semibold text-[#8B82B8] hover:underline">View all new</button></div>
+    ${grid([...products].sort((a, z) => z.id - a.id).slice(0, 4))}
   </section>
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="flex justify-between items-end mb-6"><h2 class="text-2xl font-bold">Featured Products</h2>
@@ -295,6 +377,7 @@ function filtered() {
   let l = products.filter(p => (f.cat === 'All' || p.category === f.cat) && (f.style === 'All' || p.style === f.style) && (!f.q || (p.name + p.category + p.style).toLowerCase().includes(f.q.toLowerCase())));
   if (f.sort === 'asc') l.sort((a, b) => a.price - b.price);
   if (f.sort === 'desc') l.sort((a, b) => b.price - a.price);
+  if (f.sort === 'new') l.sort((a, z) => z.id - a.id);
   return l;
 }
 function setF(k, v) { f[k] = v; render(); }
@@ -314,6 +397,7 @@ function renderShop() {
         <span class="text-neutral-500">Showing <b id="shop-count" class="text-[#111]">${l.length} items</b></span>
         <select onchange="setF('sort',this.value)" aria-label="Sort products" class="bg-white border border-[#24262A]/15 rounded-lg px-3 py-2">
           <option value="default" ${f.sort === 'default' ? 'selected' : ''}>Featured</option>
+          <option value="new" ${f.sort === 'new' ? 'selected' : ''}>Newest</option>
           <option value="asc" ${f.sort === 'asc' ? 'selected' : ''}>Price: Low → High</option>
           <option value="desc" ${f.sort === 'desc' ? 'selected' : ''}>Price: High → Low</option>
         </select>
@@ -368,7 +452,7 @@ function renderProduct() {
       <div class="py-4">
         <span class="text-xs text-[#6f66a0] font-bold">${p.category} • ${p.style}</span>
         <h1 class="text-3xl font-extrabold mt-1">${p.name}</h1>
-        <a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false" class="inline-block text-sm text-neutral-500 mt-2 hover:text-[#111] underline-offset-2 hover:underline">★ ${productStats(p).avg} · ${productStats(p).total} reviews</a>
+        <a href="#reviews" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'});return false" class="inline-block text-sm text-neutral-500 mt-2 hover:text-[#111] underline-offset-2 hover:underline">${productStats(p).none ? 'No reviews yet · be the first' : '★ ' + productStats(p).avg + ' · ' + productStats(p).total + ' reviews'}</a>
         <div class="text-2xl font-bold mt-4">${baht(p.price)}</div>
         <p class="text-neutral-600 mt-4">${p.desc}</p>
         <div class="mt-8"><label class="block text-sm font-bold mb-3">Color: <span class="font-normal text-neutral-600">${cName(selectedColor)}</span></label>
@@ -383,6 +467,138 @@ function renderProduct() {
     ${reviewsSection(p)}
     ${related(p)}</div>`;
 }
+// ---------- OUTFIT FINDER ----------
+const OCCASIONS = [
+  {id:'office', target:3.5, label:'Office & meetings', desc:'Sharp and professional', rank:['set-4','set-2','set-1','set-3']},
+  {id:'formal', target:4.5, label:'Interviews & formal events', desc:'Make a strong impression', rank:['set-4','set-2','set-1','set-3']},
+  {id:'cafe', target:3, label:'Cafe & date night', desc:'Clean, relaxed, put-together', rank:['set-2','set-1','set-4','set-3']},
+  {id:'daily', target:2, label:'Everyday & hanging out', desc:'Comfortable all day', rank:['set-1','set-2','set-3','set-4']},
+  {id:'night', target:1.5, label:'Night out & streetwear', desc:'Bold and standout', rank:['set-3','set-2','set-1','set-4']}
+];
+let finder = {occ: 'daily', budget: 4000, weather: 'any'};
+function setWeather(w) { finder.weather = w; render(); }
+function setOcc(id) { finder.occ = id; render(); }
+function setBudgetPreset(v) { finder.budget = Math.min(6000, Math.max(2000, v)); render(); }
+function setBudget(v) {
+  finder.budget = +v;
+  document.getElementById('finder-budget-label').innerText = baht(finder.budget);
+  document.getElementById('finder-results').innerHTML = finderResults();
+}
+function finderCard(s, b, tag) {
+  const left = b - s.price;
+  return `<div class="bg-white rounded-2xl overflow-hidden shadow-[0_1px_3px_rgba(36,38,42,.06)]">
+    <div class="relative aspect-[4/3] bg-neutral-100"><img src="${s.image}" alt="${s.name}" loading="lazy" class="w-full h-full object-cover object-top">
+      <span class="absolute top-4 left-4 bg-[#8B82B8] text-white text-xs px-3 py-1 rounded-full font-semibold">${tag}</span></div>
+    <div class="p-5">
+      <div class="flex justify-between items-start gap-2"><h3 class="text-lg font-bold">${s.name}</h3><span class="text-xs bg-[#F5F2EC] px-2 py-1 rounded-md border border-[#24262A]/10">${s.style}</span></div>
+      <p class="text-sm text-neutral-600 mt-1">${s.why}</p>
+      <div class="flex gap-2 mt-3">${s.products.map(p => `<img src="${p.image}" alt="${p.name}" title="${p.name}" class="w-12 h-12 object-cover rounded-md bg-[#F5F2EC]">`).join('')}</div>
+      <div class="mt-4"><span class="text-lg font-bold">${baht(s.price)}</span><span class="text-xs text-neutral-400 line-through ml-1">${baht(s.original)}</span></div>
+      <p class="text-sm mt-1 ${left >= 0 ? 'text-[#6f66a0]' : 'text-[#B88F8A]'}">${left >= 0 ? baht(left) + ' left in your budget' : baht(-left) + ' over your budget'}</p>
+      <div class="flex gap-3 mt-4">
+        <button onclick="nav('outfit-detail','${s.id}')" class="flex-1 border border-[#111] font-medium py-2.5 rounded-xl hover:bg-neutral-100 text-sm">View set</button>
+        <button onclick="addOutfitToCart('${s.id}')" class="flex-1 bg-[#111] text-white font-medium py-2.5 rounded-xl hover:bg-[#8B82B8] transition-colors text-sm">Add to cart</button>
+      </div></div></div>`;
+}
+function setResults() {
+  const o = OCCASIONS.find(x => x.id === finder.occ), b = finder.budget;
+  const ranked = o.rank.map(id => outfitSets.find(s => s.id === id)), fit = ranked.filter(s => s.price <= b);
+  if (!fit.length) {
+    const c = [...ranked].sort((a, z) => a.price - z.price)[0];
+    return `<div class="bg-white rounded-2xl p-5 mb-6"><p class="font-bold">Your budget is a little tight for a full set.</p>
+      <p class="text-sm text-neutral-600 mt-1">The most affordable set is ${c.name} at ${baht(c.price)}, ${baht(c.price - b)} above your budget.</p>
+      <button onclick="setBudgetPreset(${c.price})" class="mt-3 text-sm font-semibold text-[#6f66a0] hover:underline">Raise budget to ${baht(c.price)}</button></div>
+      <div class="grid md:grid-cols-2 gap-6">${finderCard(c, b, 'Closest option')}</div>`;
+  }
+  const [main, alt] = fit;
+  const note = main.id !== ranked[0].id ? `<p class="text-sm text-neutral-600 mb-4">Your ideal match, ${ranked[0].name}, is ${baht(ranked[0].price - b)} over budget. This is the best fit within it.</p>` : '';
+  return note + `<div class="grid md:grid-cols-2 gap-6">${finderCard(main, b, main.id === ranked[0].id ? 'Best match' : 'Best within budget')}${alt ? finderCard(alt, b, 'Also works') : ''}</div>`;
+}
+
+const REQUIRED_SLOTS = ['Tops', 'Pants', 'Shoes'];   // categories every generated look must include
+const FINISH_SLOTS = ['Jackets', 'Caps'];            // optional finishing pieces
+const PER_SLOT_LIMIT = 12;                           // keep the best N pieces per slot so large catalogs stay fast
+const weatherOK = p => finder.weather === 'any' || p.season === 'all' || p.season === finder.weather;
+const LOOSE = ['loose', 'oversized'];
+
+function itemScore(p, o) { return (p.occasions.includes(o.id) ? 2 : 0) - Math.abs(p.formality - o.target); }
+function validateProducts() {
+  const need = ['formality', 'occasions', 'palette', 'season', 'fit'];
+  products.forEach(p => { const m = need.filter(k => p[k] == null); if (m.length) console.warn(`Product ${p.id} (${p.name}) is missing tags: ${m.join(', ')}`); });
+}
+function generateLooks(o, b) {
+  // 1) shortlist each slot: right dress level, right weather, best-scoring first
+  const lists = REQUIRED_SLOTS.map(cat => products
+    .filter(p => p.category === cat && p.formality != null && Math.abs(p.formality - o.target) <= 2 && weatherOK(p))
+    .sort((a, z) => itemScore(z, o) - itemScore(a, o)).slice(0, PER_SLOT_LIMIT));
+  // 2) combine one piece from each slot, then score
+  let combos = [[]];
+  lists.forEach(list => { combos = combos.flatMap(c => list.map(p => [...c, p])); });
+  combos = combos.map(items => {
+    const fs = items.map(i => i.formality), pal = items.map(i => i.palette);
+    let score = items.reduce((a, i) => a + itemScore(i, o), 0);
+    score -= Math.max(...fs) - Math.min(...fs);                                   // consistent dress level
+    if (pal.includes('blue') && pal.includes('earth')) score -= 1.5;               // palette clash
+    const top = items.find(i => i.category === 'Tops'), bottom = items.find(i => i.category === 'Pants');
+    if (top && bottom && Math.max(top.formality, bottom.formality) <= 3 && LOOSE.includes(top.fit) && LOOSE.includes(bottom.fit)) score -= 1.5; // too much volume (casual looks only)
+    return {items, score, price: items.reduce((a, i) => a + i.price, 0)};
+  }).sort((a, z) => z.score - a.score || a.price - z.price);
+  // 3) keep looks within budget, avoid near-duplicates
+  const picked = [];
+  for (const c of combos.filter(c => c.price <= b)) {
+    if (picked.every(p => p.items.filter(i => c.items.includes(i)).length < 2)) picked.push(c);
+    if (picked.length === 3) break;
+  }
+  return {picked, cheapest: [...combos].sort((a, z) => a.price - z.price)[0]};
+}
+function addLook(ids) { ids.forEach(id => addItem(id, 'M')); toast('Look added to cart'); nav('cart'); }
+function lookCard(c, o, b, tag) {
+  const left = b - c.price, n = c.items.filter(i => i.occasions.includes(o.id)).length;
+  const finish = products.filter(p => FINISH_SLOTS.includes(p.category) && p.occasions.includes(o.id) && weatherOK(p) && p.price <= left).sort((a, z) => z.rating - a.rating)[0];
+  const ids = c.items.map(i => i.id);
+  return `<div class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)] flex flex-col">
+    <span class="self-start bg-[#8B82B8]/15 text-[#6f66a0] text-xs px-3 py-1 rounded-full font-semibold">${tag}</span>
+    <div class="grid grid-cols-3 gap-2 mt-3">${c.items.map(i => `<div class="cursor-pointer" onclick="nav('product',${i.id})"><img src="${i.image}" alt="${i.name}" loading="lazy" class="w-full aspect-[4/5] object-cover rounded-lg bg-[#F5F2EC]"><p class="text-xs mt-1 truncate">${i.name}</p><p class="text-xs text-neutral-400">${baht(i.price)}</p></div>`).join('')}</div>
+    <p class="text-sm text-neutral-600 mt-3">${n} of ${c.items.length} pieces are made for this occasion, and the dress level stays consistent.</p>
+    <div class="mt-3 font-bold text-lg">${baht(c.price)}</div>
+    <p class="text-sm ${left >= 0 ? 'text-[#6f66a0]' : 'text-[#B88F8A]'}">${left >= 0 ? baht(left) + ' left in your budget' : baht(-left) + ' over your budget'}</p>
+    <div class="mt-4 flex flex-col gap-2 mt-auto pt-4">
+      <button onclick="addLook([${ids}])" class="bg-[#111] text-white font-medium py-2.5 rounded-xl hover:bg-[#8B82B8] transition-colors text-sm">Add look to cart</button>
+      ${finish ? `<button onclick="addLook([${ids},${finish.id}])" class="border border-[#111] py-2.5 rounded-xl text-sm hover:bg-neutral-100">Finish with ${finish.name} (+${baht(finish.price)})</button>` : ''}
+    </div></div>`;
+}
+function lookResults() {
+  const o = OCCASIONS.find(x => x.id === finder.occ), b = finder.budget, {picked, cheapest} = generateLooks(o, b);
+  if (!cheapest) return `<div class="bg-white rounded-2xl p-5 mb-6"><p class="font-bold">No mix-and-match looks for this combination yet.</p><p class="text-sm text-neutral-600 mt-1">Try a different weather option or occasion, or browse the ready-made sets above.</p></div>`;
+  if (!picked.length) return `<div class="bg-white rounded-2xl p-5 mb-6"><p class="font-bold">No mix-and-match look fits this budget.</p><p class="text-sm text-neutral-600 mt-1">The cheapest look is ${baht(cheapest.price)}, ${baht(cheapest.price - b)} above your budget.</p><button onclick="setBudgetPreset(${cheapest.price})" class="mt-3 text-sm font-semibold text-[#6f66a0] hover:underline">Raise budget to ${baht(cheapest.price)}</button></div>`;
+  return `<div class="grid md:grid-cols-3 gap-6">${picked.map((c, i) => lookCard(c, o, b, i === 0 ? 'Top pick' : 'Alternative ' + i)).join('')}</div>`;
+}
+function finderResults() {
+  return `<h3 class="font-bold mb-3">Ready-made sets <span class="text-xs font-normal text-neutral-500">· 15% off</span></h3>${setResults()}
+    <h3 class="font-bold mt-12 mb-1">Build-your-own looks</h3>
+    <p class="text-sm text-neutral-500 mb-4">Mixed from our pieces by occasion and dress level. Sold at regular price, no set discount.</p>${lookResults()}`;
+}
+function renderFinder() {
+  return `<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="mb-10 text-center max-w-2xl mx-auto"><h1 class="text-3xl font-extrabold">Find My Outfit</h1>
+      <p class="text-neutral-600 mt-2">Tell us where you're going and your budget. We'll suggest a ready-made set.</p></div>
+    <h2 class="font-bold mb-3"><span class="text-[#6f66a0]">1.</span> Where are you wearing it?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 mb-10">
+      ${OCCASIONS.map(o => `<button onclick="setOcc('${o.id}')" aria-pressed="${finder.occ === o.id}" class="text-left p-4 rounded-2xl border-2 transition ${finder.occ === o.id ? 'border-[#8B82B8] bg-[#8B82B8]/10' : 'border-[#24262A]/10 bg-white hover:border-neutral-300'}"><span class="font-bold text-sm block">${o.label}</span><span class="text-xs text-neutral-500">${o.desc}</span></button>`).join('')}
+    </div>
+    <h2 class="font-bold mb-3"><span class="text-[#6f66a0]">2.</span> What's your budget?</h2>
+    <div class="bg-white rounded-2xl p-5 mb-10">
+      <div class="flex justify-between items-center mb-3"><label for="finder-budget" class="text-sm text-neutral-500">Up to</label><span id="finder-budget-label" class="text-2xl font-extrabold">${baht(finder.budget)}</span></div>
+      <input id="finder-budget" type="range" min="2000" max="6000" step="100" value="${finder.budget}" oninput="setBudget(this.value)" class="w-full accent-[#8B82B8]">
+      <div class="flex justify-between text-xs text-neutral-400 mt-1"><span>${baht(2000)}</span><span>${baht(6000)}</span></div>
+      <div class="flex gap-2 mt-4 overflow-x-auto no-scrollbar">${[3000, 3500, 4000, 5000].map(v => chip(baht(v), finder.budget === v, `setBudgetPreset(${v})`)).join('')}</div>
+      <div class="flex items-center gap-2 mt-4 overflow-x-auto no-scrollbar"><span class="text-sm text-neutral-500 mr-1">Weather</span>${[['any', 'Any'], ['hot', 'Hot'], ['cool', 'Cool']].map(([v, l]) => chip(l, finder.weather === v, `setWeather('${v}')`)).join('')}</div>
+    </div>
+    <h2 class="font-bold mb-4"><span class="text-[#6f66a0]">3.</span> Our suggestions</h2>
+    <div id="finder-results">${finderResults()}</div>
+  </div>`;
+}
+
 // ---------- REVIEWS ----------
 // Placeholder sample reviews (replace with real data from your backend)
 const SAMPLE_REVIEWS = [
@@ -397,30 +613,37 @@ const esc = t => String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>'
 const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
 function productStats(p) {
   const own = reviews[p.id] || [], total = p.reviews + own.length;
+  if (!total) return {avg: '–', total: 0, none: true};
   const avg = (p.rating * p.reviews + own.reduce((a, x) => a + x.rating, 0)) / total;
   return {avg: avg.toFixed(1), total};
 }
-function sampleFor(p) { return [0, 1, 2].map(k => SAMPLE_REVIEWS[(p.id + k) % SAMPLE_REVIEWS.length]); }
+function sampleFor(p) { if (!p.reviews) return []; return [0, 1, 2].map(k => SAMPLE_REVIEWS[(p.id + k) % SAMPLE_REVIEWS.length]); }
 function setRvRating(n) {
   reviewRating = n;
   document.querySelectorAll('[data-star]').forEach(b => { b.innerText = +b.dataset.star <= n ? '★' : '☆'; b.setAttribute('aria-pressed', +b.dataset.star === n); });
 }
+const hasPurchased = p => orders.some(o => o.items.some(i => i.id === p.id));
+const hasReviewed = p => (reviews[p.id] || []).length > 0;
+const verifiedBadge = v => v.verified ? '<span class="ml-2 text-[11px] font-semibold text-[#6f66a0] bg-[#8B82B8]/15 px-2 py-0.5 rounded-full align-middle">Verified purchase</span>' : '';
 function submitReview() {
+  const prod = selectedProduct;
+  if (!hasPurchased(prod)) return toast('Only customers who bought this item can review it');
+  if (hasReviewed(prod)) return toast("You've already reviewed this item");
   const name = document.getElementById('rv-name').value.trim(), text = document.getElementById('rv-text').value.trim();
   if (!name || text.length < 5) return toast('Please add your name and a short review');
   const id = selectedProduct.id;
-  reviews[id] = [{name, rating: reviewRating, text, date: new Date().toLocaleDateString('en-US')}, ...(reviews[id] || [])];
+  reviews[id] = [{name, rating: reviewRating, text, date: new Date().toLocaleDateString('en-US'), verified: true}, ...(reviews[id] || [])];
   persist(); reviewRating = 5; render(); toast('Thanks for your review');
   setTimeout(() => document.getElementById('reviews')?.scrollIntoView({behavior: 'smooth'}), 50);
 }
 let rvFilter = 'all';
 function allReviewsFor(p) {
   const k = p.id % SAMPLE_REVIEWS.length;
-  return [...(reviews[p.id] || []), ...SAMPLE_REVIEWS.slice(k).concat(SAMPLE_REVIEWS.slice(0, k))];
+  return [...(reviews[p.id] || []), ...(p.reviews ? SAMPLE_REVIEWS : []).slice(k).concat(SAMPLE_REVIEWS.slice(0, k))];
 }
 function reviewCard(v) {
   return `<article class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)]">
-    <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
+    <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}${verifiedBadge(v)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
     <p class="text-sm text-neutral-700 mt-3 leading-relaxed">${esc(v.text)}</p></article>`;
 }
 function openReviews(id) {
@@ -460,19 +683,19 @@ function reviewsSection(p) {
         <div class="flex items-end gap-3"><span class="text-5xl font-extrabold">${st.avg}</span><span class="pb-1 text-sm text-neutral-500">out of 5</span></div>
         <div class="text-[#B88F8A] text-lg mt-1" aria-hidden="true">${stars(st.avg)}</div>
         <p class="text-sm text-neutral-500 mt-1">Based on ${st.total} reviews</p>
-        <div class="mt-8 space-y-3">
+        ${hasPurchased(p) && !hasReviewed(p) ? `<div class="mt-8 space-y-3">
           <h3 class="font-bold text-sm">Write a review</h3>
           <div class="flex gap-1 text-2xl text-[#B88F8A]" role="group" aria-label="Your rating">${[1,2,3,4,5].map(n => `<button data-star="${n}" aria-pressed="${n === reviewRating}" aria-label="${n} star${n > 1 ? 's' : ''}" onclick="setRvRating(${n})">${n <= reviewRating ? '★' : '☆'}</button>`).join('')}</div>
           <input id="rv-name" class="${inp}" placeholder="Your name" aria-label="Your name" maxlength="40">
           <textarea id="rv-text" rows="4" class="${inp}" placeholder="Share your thoughts on fit, quality and style" aria-label="Your review" maxlength="500"></textarea>
           <button onclick="submitReview()" class="w-full bg-[#111] text-white font-medium py-3 rounded-xl hover:bg-[#8B82B8] transition-colors">Submit review</button>
-        </div>
+        </div>` : `<div class="mt-8 bg-[#F5F2EC] border border-[#24262A]/10 rounded-xl p-4 text-sm text-neutral-600"><h3 class="font-bold text-sm text-[#111] mb-1">Write a review</h3>${hasReviewed(p) ? 'Thanks, you have already reviewed this item.' : 'Only customers who have purchased this item can write a review.'}</div>`}
       </div>
       <div class="lg:col-span-2 space-y-4">
-        ${list.map(v => `<article class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)]">
-          <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
+        ${list.length ? '' : '<p class="text-sm text-neutral-500 bg-white rounded-2xl p-5">No reviews yet. Be the first to review this item.</p>'}${list.map(v => `<article class="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(36,38,42,.06)]">
+          <div class="flex justify-between items-start gap-4"><div><div class="text-[#B88F8A]" aria-label="${v.rating} out of 5 stars">${stars(v.rating)}</div><h3 class="font-bold text-sm mt-1">${esc(v.name)}${verifiedBadge(v)}</h3></div><span class="text-xs text-neutral-400 shrink-0">${esc(v.date)}</span></div>
           <p class="text-sm text-neutral-700 mt-3 leading-relaxed">${esc(v.text)}</p></article>`).join('')}
-        <button onclick="openAllReviews()" class="w-full border border-[#111] font-medium py-3 rounded-xl hover:bg-white transition-colors">View all reviews</button>
+        ${list.length ? '<button onclick="openAllReviews()" class="w-full border border-[#111] font-medium py-3 rounded-xl hover:bg-white transition-colors">View all reviews</button>' : ''}
       </div>
     </div>
   </section>`;
@@ -561,7 +784,9 @@ function renderFavorites() {
 }
 
 document.getElementById('year').innerText = new Date().getFullYear();
-render();
+validateProducts();
+window.addEventListener('hashchange', route);
+route();
 </script>
 </body>
 </html>
